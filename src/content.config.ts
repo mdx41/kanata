@@ -1,5 +1,5 @@
 import { defineCollection } from 'astro:content';
-import { glob, secretLegacyFlag } from 'astro/loaders';
+import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { ESSAY_PUBLIC_SLUG_RE } from './utils/slug-rules';
 import { normalizeBitsAvatarPath } from './utils/format';
@@ -96,8 +96,7 @@ const essay = defineCollection({
   loader: glob({
     pattern: '**/*.{md,mdx}',
     base: './src/content/essay',
-    generateId: ({ entry }) => entry.replace(/\\/g, '/'),
-    [secretLegacyFlag]: true
+    generateId: ({ entry }) => entry.replace(/\\/g, '/')
   }),
   schema: essaySchema
 });

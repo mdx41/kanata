@@ -318,10 +318,41 @@ const normalizeNavOrnament = (value: unknown): string | null => {
 };
 
 const normalizeEmail = (value: string): string => value.replace(/^mailto:/i, '').trim();
+const normalizeNullableEmail = (value: unknown): string | null => {
+  const normalized = normalizeEmail(normalizeTrimmed(value));
+  return normalized && ADMIN_EMAIL_RE.test(normalized) ? normalized : null;
+};
 
 const parseOrder = (value: string | number | null | undefined, fallback: number): number => {
   const next = Number.parseInt(String(value ?? '').trim(), 10);
   return Number.isFinite(next) ? next : fallback;
+};
+
+const claimAvailableOrder = (
+  usedOrders: Set<number>,
+  preferred: number,
+  fallback: number,
+  isValid: (value: number) => boolean,
+  min: number,
+  max: number
+): number => {
+  const candidates = [preferred, fallback];
+
+  for (const candidate of candidates) {
+    if (isValid(candidate) && !usedOrders.has(candidate)) {
+      usedOrders.add(candidate);
+      return candidate;
+    }
+  }
+
+  for (let order = min; order <= max; order += 1) {
+    if (!usedOrders.has(order)) {
+      usedOrders.add(order);
+      return order;
+    }
+  }
+
+  return fallback;
 };
 
 const parseInteger = (value: string | number | null | undefined): number | null => {
@@ -415,6 +446,42 @@ export const canonicalizeAdminThemeSettings = (
     })
     .map(({ __index: _ignored, ...item }) => item);
 
+  const normalizedPresetOrder: SiteSocialPresetOrder = {
+    github: parseOrder(
+      rawPresetOrder.github as string | number | null | undefined,
+      ADMIN_SOCIAL_PRESET_ORDER_DEFAULT.github
+    ),
+    x: parseOrder(rawPresetOrder.x as string | number | null | undefined, ADMIN_SOCIAL_PRESET_ORDER_DEFAULT.x),
+    email: parseOrder(
+      rawPresetOrder.email as string | number | null | undefined,
+      ADMIN_SOCIAL_PRESET_ORDER_DEFAULT.email
+    )
+  };
+
+  const usedSocialOrders = new Set<number>();
+
+  normalizedCustom.forEach((item, index) => {
+    item.order = claimAvailableOrder(
+      usedSocialOrders,
+      item.order,
+      ADMIN_SOCIAL_PRESET_IDS.length + index + 1,
+      isAdminSocialOrderValue,
+      ADMIN_SOCIAL_ORDER_MIN,
+      ADMIN_SOCIAL_ORDER_MAX
+    );
+  });
+
+  ADMIN_SOCIAL_PRESET_IDS.forEach((id) => {
+    normalizedPresetOrder[id] = claimAvailableOrder(
+      usedSocialOrders,
+      normalizedPresetOrder[id],
+      ADMIN_SOCIAL_PRESET_ORDER_DEFAULT[id],
+      isAdminSocialOrderValue,
+      ADMIN_SOCIAL_ORDER_MIN,
+      ADMIN_SOCIAL_ORDER_MAX
+    );
+  });
+
   const normalizedNav = (Array.isArray(shell.nav) ? shell.nav : [])
     .map((item) => {
       const record = isRecord(item) ? item : null;
@@ -473,18 +540,8 @@ export const canonicalizeAdminThemeSettings = (
       socialLinks: {
         github: normalizeTrimmed(socialLinks.github) || null,
         x: normalizeTrimmed(socialLinks.x) || null,
-        email: normalizeEmail(normalizeTrimmed(socialLinks.email)) || null,
-        presetOrder: {
-          github: parseOrder(
-            rawPresetOrder.github as string | number | null | undefined,
-            ADMIN_SOCIAL_PRESET_ORDER_DEFAULT.github
-          ),
-          x: parseOrder(rawPresetOrder.x as string | number | null | undefined, ADMIN_SOCIAL_PRESET_ORDER_DEFAULT.x),
-          email: parseOrder(
-            rawPresetOrder.email as string | number | null | undefined,
-            ADMIN_SOCIAL_PRESET_ORDER_DEFAULT.email
-          )
-        },
+        email: normalizeNullableEmail(socialLinks.email),
+        presetOrder: normalizedPresetOrder,
         custom: normalizedCustom
       }
     },
