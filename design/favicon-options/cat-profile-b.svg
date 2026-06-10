@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Cat profile favicon option B">
+  <style>
+    .mark { fill: #181818; }
+    @media (prefers-color-scheme: dark) {
+      .mark { fill: #f5f5f5; }
+    }
+  </style>
+  <path class="mark" d="M12 45.5c7.8-.6 12.5-3.8 15.5-8.1 2.4-3.4 3.4-7.1 4.1-10.3.9-4.4 1.7-8.3 6.1-10.9 3.1-1.8 7-2.1 11.7-.9l-5.7 7.9c4.8 2.7 8.3 7.9 8.3 14.1 0 9-7.3 16.2-16.2 16.2H12v-8Zm24.8-17.4c-.7 3.3-1.7 6.3-3.4 9h2.4c3.6 0 6.5-2.9 6.5-6.5 0-2.2-1.1-4.2-2.8-5.4l-1.6-1.1c-.4 1.2-.7 2.6-1.1 4Z"/>
+</svg>

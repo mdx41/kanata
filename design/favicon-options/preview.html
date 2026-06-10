@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cat Favicon Options</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f7f5f2;
+        --text: #24211f;
+        --muted: #68615c;
+        --border: #ded9d2;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #171717;
+          --text: #efefef;
+          --muted: #aaa;
+          --border: #333;
+        }
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: ui-sans-serif, system-ui, sans-serif;
+      }
+
+      main {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+
+      h1 {
+        font-size: 20px;
+        margin: 0 0 24px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+      }
+
+      .option {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 18px;
+      }
+
+      .option h2 {
+        font-size: 14px;
+        margin: 0 0 14px;
+        color: var(--muted);
+      }
+
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin: 12px 0;
+      }
+
+      .tile {
+        display: inline-grid;
+        place-items: center;
+        width: 64px;
+        height: 64px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        background: #fff;
+      }
+
+      .tile--dark {
+        background: #111;
+      }
+
+      img {
+        display: block;
+      }
+
+      .size-16 {
+        width: 16px;
+        height: 16px;
+      }
+
+      .size-32 {
+        width: 32px;
+        height: 32px;
+      }
+
+      .size-48 {
+        width: 48px;
+        height: 48px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Cat Favicon Options</h1>
+      <div class="grid">
+        <section class="option">
+          <h2>A: compact profile</h2>
+          <div class="row">
+            <span class="tile"><img class="size-48" src="./cat-profile-a.svg" alt="" /></span>
+            <span class="tile"><img class="size-32" src="./cat-profile-a.svg" alt="" /></span>
+            <span class="tile"><img class="size-16" src="./cat-profile-a.svg" alt="" /></span>
+          </div>
+          <div class="row">
+            <span class="tile tile--dark"><img class="size-48" src="./cat-profile-a.svg" alt="" /></span>
+            <span class="tile tile--dark"><img class="size-32" src="./cat-profile-a.svg" alt="" /></span>
+            <span class="tile tile--dark"><img class="size-16" src="./cat-profile-a.svg" alt="" /></span>
+          </div>
+        </section>
+        <section class="option">
+          <h2>B: quiet silhouette</h2>
+          <div class="row">
+            <span class="tile"><img class="size-48" src="./cat-profile-b.svg" alt="" /></span>
+            <span class="tile"><img class="size-32" src="./cat-profile-b.svg" alt="" /></span>
+            <span class="tile"><img class="size-16" src="./cat-profile-b.svg" alt="" /></span>
+          </div>
+          <div class="row">
+            <span class="tile tile--dark"><img class="size-48" src="./cat-profile-b.svg" alt="" /></span>
+            <span class="tile tile--dark"><img class="size-32" src="./cat-profile-b.svg" alt="" /></span>
+            <span class="tile tile--dark"><img class="size-16" src="./cat-profile-b.svg" alt="" /></span>
+          </div>
+        </section>
+        <section class="option">
+          <h2>C: stable mark</h2>
+          <div class="row">
+            <span class="tile"><img class="size-48" src="./cat-profile-c.svg" alt="" /></span>
+            <span class="tile"><img class="size-32" src="./cat-profile-c.svg" alt="" /></span>
+            <span class="tile"><img class="size-16" src="./cat-profile-c.svg" alt="" /></span>
+          </div>
+          <div class="row">
+            <span class="tile tile--dark"><img class="size-48" src="./cat-profile-c.svg" alt="" /></span>
+            <span class="tile tile--dark"><img class="size-32" src="./cat-profile-c.svg" alt="" /></span>
+            <span class="tile tile--dark"><img class="size-16" src="./cat-profile-c.svg" alt="" /></span>
+          </div>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

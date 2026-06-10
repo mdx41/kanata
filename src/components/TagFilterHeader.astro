@@ -1,0 +1,180 @@
+---
+import UiIcon from './UiIcon.astro';
+
+type TagOption = {
+  count: number;
+  href: string;
+  isActive?: boolean;
+  key: string;
+  label: string;
+};
+
+type CurrentTagState = {
+  clearHref: string;
+  label: string;
+};
+
+const {
+  currentTag = null,
+  dialogTitleId,
+  fallbackListId,
+  headerClass = 'page-header page-header--with-search',
+  pageTitleText,
+  pickerHref,
+  rssHref,
+  searchAriaLabel,
+  subtitleText = null,
+  tagOptions = []
+} = Astro.props as {
+  currentTag?: CurrentTagState | null;
+  dialogTitleId: string;
+  fallbackListId: string;
+  headerClass?: string;
+  pageTitleText: string;
+  pickerHref: string;
+  rssHref: string;
+  searchAriaLabel: string;
+  subtitleText?: string | null;
+  tagOptions?: TagOption[];
+};
+
+const hasTagEntry = tagOptions.length > 0;
+const tagTriggerText = currentTag ? 'タグを変更' : '#タグ';
+---
+
+<div class={headerClass}>
+  <div class="page-heading">
+    <div class="page-title-row">
+      <h1 class="page-title">{pageTitleText}</h1>
+      {currentTag ? (
+        <span class="entry-tag-current__pill entry-tag-current__pill--inline">
+          <UiIcon name="tag" class="entry-tag-current__icon" size={14} />
+          <strong class="entry-tag-current__label">#{currentTag.label}</strong>
+        </span>
+      ) : null}
+    </div>
+    <span class:list={['page-subtitle', 'page-subtitle--entry-filters', currentTag && 'page-subtitle--with-current-tag']}>
+      {subtitleText ? <span class="page-subtitle__text">{subtitleText}</span> : null}
+      {!currentTag ? <a class="page-subtitle__link page-subtitle__item" href={rssHref}>RSS</a> : null}
+      {hasTagEntry ? (
+        currentTag ? (
+          <span class="page-subtitle__item page-subtitle__actions">
+            <a
+              class="page-subtitle__action"
+              href={pickerHref}
+              data-entry-tag-trigger
+              aria-haspopup="dialog"
+              aria-expanded="false"
+            >
+              {tagTriggerText}
+            </a>
+            <a class="page-subtitle__link" href={currentTag.clearHref}>
+              絞り込みを解除
+            </a>
+          </span>
+        ) : (
+          <a
+            class="page-subtitle__action page-subtitle__item"
+            href={pickerHref}
+            data-entry-tag-trigger
+            aria-haspopup="dialog"
+            aria-expanded="false"
+          >
+            {tagTriggerText}
+          </a>
+        )
+      ) : null}
+    </span>
+  </div>
+  <div class="page-actions">
+    <div class="entry-search" data-entry-search>
+      <div class="entry-search-panel" data-entry-search-panel aria-hidden="true">
+        <input
+          data-entry-search-input
+          type="search"
+          placeholder="検索: タイトル / 概要 / タグ"
+          autocomplete="off"
+          aria-label={searchAriaLabel}
+        />
+        <p class="entry-search-feedback" data-entry-search-feedback aria-hidden="true" hidden></p>
+      </div>
+      <span class="entry-search-bridge" aria-hidden="true"></span>
+      <button
+        class="entry-search-toggle"
+        data-entry-search-toggle
+        type="button"
+        aria-label={searchAriaLabel}
+        aria-expanded="false"
+      >
+        <UiIcon name="search" class="icon" />
+      </button>
+      <p class="sr-only" data-entry-search-live role="status" aria-live="polite" aria-atomic="true"></p>
+    </div>
+  </div>
+</div>
+
+{hasTagEntry ? (
+  <>
+    <dialog class="entry-tags-dialog" data-entry-tag-dialog aria-labelledby={dialogTitleId}>
+      <div class="entry-tags-dialog__inner">
+        <div class="entry-tags-dialog__handle" aria-hidden="true"></div>
+        <div class="entry-tags-dialog__head">
+          <div class="entry-tags-dialog__title-wrap">
+            <div class="entry-tags-dialog__title-row">
+              <h2 class="entry-tags-dialog__title" id={dialogTitleId} tabindex="-1">{pageTitleText}のタグ</h2>
+              <p class="entry-tags-dialog__hint">全{tagOptions.length}件</p>
+            </div>
+          </div>
+          <div class="entry-tags-dialog__actions">
+            <button class="entry-tags-dialog__close" type="button" data-entry-tag-close aria-label="タグ選択を閉じる">
+              ✕
+            </button>
+          </div>
+        </div>
+        <div class="entry-tags-dialog__list">
+          {tagOptions.map((tagOption) => (
+            <a
+              class:list={['entry-tag-option', tagOption.isActive && 'is-active']}
+              href={tagOption.href}
+              data-entry-tag-key={tagOption.key}
+              aria-current={tagOption.isActive ? 'page' : undefined}
+            >
+              <span class="entry-tag-option__label">#{tagOption.label}</span>
+              <span class="entry-tag-option__count">{tagOption.count}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </dialog>
+    <noscript>
+      <section class="entry-tags-fallback" id={fallbackListId} aria-labelledby={`${dialogTitleId}-fallback`}>
+        <div class="entry-tags-fallback__head">
+          <h2 class="entry-tags-fallback__title" id={`${dialogTitleId}-fallback`}>{pageTitleText}のタグ</h2>
+          <p class="entry-tags-fallback__hint">
+            JavaScriptが無効な状態です。下のタグをクリックすると静的な結果ページへ移動できます。
+          </p>
+        </div>
+        <div class="entry-tags-dialog__toolbar">
+          <span class="entry-tags-dialog__summary">全{tagOptions.length}件のタグがあります。</span>
+          {currentTag ? (
+            <a class="entry-tags-dialog__clear" href={currentTag.clearHref}>すべて見る</a>
+          ) : (
+            <span class="entry-tags-dialog__summary entry-tags-dialog__summary--secondary">タグリンクから結果ページへ移動できます</span>
+          )}
+        </div>
+        <div class="entry-tags-dialog__list">
+          {tagOptions.map((tagOption) => (
+            <a
+              class:list={['entry-tag-option', tagOption.isActive && 'is-active']}
+              href={tagOption.href}
+              aria-current={tagOption.isActive ? 'page' : undefined}
+            >
+              <span class="entry-tag-option__label">#{tagOption.label}</span>
+              <span class="entry-tag-option__count">{tagOption.count}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    </noscript>
+  </>
+) : null}

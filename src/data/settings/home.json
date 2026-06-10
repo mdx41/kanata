@@ -1,0 +1,13 @@
+{
+  "introLead": "記事、メモ、アーカイブ、短い記録をまとめて公開できます。",
+  "introMore": "記事を見る",
+  "introMoreLinks": [
+    "archive",
+    "tag"
+  ],
+  "showIntroLead": false,
+  "showIntroMore": false,
+  "heroPresetId": "default",
+  "heroImageSrc": null,
+  "heroImageAlt": "KanataのTopイメージ"
+}

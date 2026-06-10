@@ -1,0 +1,60 @@
+---
+import { render } from 'astro:content';
+import { getEssaySlug, getVisibleEssayRouteEntries, type EssayEntry } from '../../lib/content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { createWithBase } from '../../utils/format';
+import { getThemeSettings, getVisibleArticleMetaTags } from '../../lib/theme-settings';
+
+type ArticleNeighborLink = {
+  href: string;
+  title: string;
+};
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const base = import.meta.env.BASE_URL ?? '/';
+  const withBase = createWithBase(base);
+  const routeEntries = await getVisibleEssayRouteEntries({ includeDraft: import.meta.env.DEV });
+  const publicRouteEntries = await getVisibleEssayRouteEntries();
+  const publicRouteEntryBySlug = new Map(publicRouteEntries.map((routeEntry) => [routeEntry.slug, routeEntry]));
+
+  return routeEntries.map(({ slug, entry }) => {
+    const publicRouteEntry = publicRouteEntryBySlug.get(slug);
+    const publicPrev = publicRouteEntry?.prev ?? null;
+    const publicNext = publicRouteEntry?.next ?? null;
+
+    return {
+      params: { slug },
+      props: {
+        entry,
+        prev: publicPrev
+          ? { href: withBase(`/archive/${getEssaySlug(publicPrev)}/`), title: publicPrev.data.title }
+          : null,
+        next: publicNext
+          ? { href: withBase(`/archive/${getEssaySlug(publicNext)}/`), title: publicNext.data.title }
+          : null
+      }
+    };
+  });
+}
+
+const { entry, prev, next } = Astro.props as {
+  entry: EssayEntry;
+  prev: ArticleNeighborLink | null;
+  next: ArticleNeighborLink | null;
+};
+const { Content } = await render(entry);
+const articleMetaSettings = getThemeSettings().settings.ui.articleMeta;
+const visibleTags = getVisibleArticleMetaTags(entry.data.tags, 'detail');
+---
+
+<ArticleLayout
+  entry={entry}
+  prev={prev}
+  next={next}
+  articleMetaSettings={articleMetaSettings}
+  visibleTags={visibleTags}
+>
+  <Content />
+</ArticleLayout>

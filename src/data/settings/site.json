@@ -1,0 +1,34 @@
+{
+  "title": "Kanata.",
+  "description": "個人のブログサイト",
+  "defaultLocale": "ja-JP",
+  "footer": {
+    "startYear": 2025,
+    "showCurrentYear": true,
+    "copyright": "kanata."
+  },
+  "adminOverview": {
+    "publicVisible": true,
+    "hiddenMessage": "このページはまだ公開されていません。"
+  },
+  "socialLinks": {
+    "github": null,
+    "x": null,
+    "email": null,
+    "presetOrder": {
+      "github": 4,
+      "x": 3,
+      "email": 2
+    },
+    "custom": [
+      {
+        "id": "custom-mastodon",
+        "label": "Mastodon",
+        "href": "https://otadon.com/@amaura",
+        "iconKey": "mastodon",
+        "visible": true,
+        "order": 1
+      }
+    ]
+  }
+}

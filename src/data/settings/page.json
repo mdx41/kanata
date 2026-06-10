@@ -1,0 +1,26 @@
+{
+  "essay": {
+    "title": "記事",
+    "subtitle": "記事と覚え書き"
+  },
+  "archive": {
+    "title": "アーカイブ",
+    "subtitle": null
+  },
+  "bits": {
+    "title": "ひとこと",
+    "subtitle": "短い記録",
+    "defaultAuthor": {
+      "name": "amaura",
+      "avatar": "author/avatar.webp"
+    }
+  },
+  "memo": {
+    "title": null,
+    "subtitle": null
+  },
+  "about": {
+    "title": "プロフィール",
+    "subtitle": null
+  }
+}

@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/about.css';
+import { getThemeSettings } from '../../lib/theme-settings';
+const { settings } = getThemeSettings();
+const aboutTitle = settings.page.about.title || 'プロフィール';
+const aboutSubtitle = settings.page.about.subtitle;
+---
+
+<BaseLayout title={aboutTitle} bodyClass="about-page">
+  <div class="page-header page-header--about">
+    <div class="page-heading">
+      <h1 class="page-title">{aboutTitle}</h1>
+      {aboutSubtitle ? <span class="page-subtitle">{aboutSubtitle}</span> : null}
+    </div>
+  </div>
+  <p class="about-intro-line">
+    このサイトはAstro Whonoをベースにしたブログです。読みやすさを大切にしながら、記事、短い記録、メモをまとめていきます。<br />
+    Markdownで記事を書き、ダークモード、コードハイライト、RSS、読書モードなどの機能を使えます。<br />
+    ここにはプロフィールやサイトの方針を掲載します。
+  </p>
+</BaseLayout>

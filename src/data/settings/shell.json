@@ -1,0 +1,41 @@
+{
+  "brandTitle": "Kanata.",
+  "quote": "好きなことを\n好きなだけ",
+  "nav": [
+    {
+      "id": "essay",
+      "label": "記事",
+      "ornament": "·",
+      "order": 1,
+      "visible": true
+    },
+    {
+      "id": "bits",
+      "label": "ひとこと",
+      "ornament": "·",
+      "order": 2,
+      "visible": true
+    },
+    {
+      "id": "memo",
+      "label": "メモ",
+      "ornament": "·",
+      "order": 3,
+      "visible": false
+    },
+    {
+      "id": "archive",
+      "label": "アーカイブ",
+      "ornament": "·",
+      "order": 4,
+      "visible": true
+    },
+    {
+      "id": "about",
+      "label": "プロフィール",
+      "ornament": "·",
+      "order": 5,
+      "visible": false
+    }
+  ]
+}

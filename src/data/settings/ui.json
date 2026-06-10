@@ -1,0 +1,23 @@
+{
+  "codeBlock": {
+    "showLineNumbers": true
+  },
+  "readingMode": {
+    "showEntry": true
+  },
+  "sidebarActions": {
+    "showRssLink": true,
+    "showThemeToggle": true,
+    "showAdminEntry": false
+  },
+  "articleMeta": {
+    "showDate": true,
+    "dateLabel": "公開日：",
+    "showTags": true,
+    "showWordCount": true,
+    "showReadingTime": true
+  },
+  "layout": {
+    "sidebarDivider": "default"
+  }
+}
