@@ -276,6 +276,32 @@ export function formatDateTime(d: Date): string {
   return `${yyyyMmDd} ${hh}:${mm}`;
 }
 
+const BIT_TIME_ZONE = 'Asia/Tokyo';
+
+const bitDateTimeFormatter = new Intl.DateTimeFormat('ja-JP', {
+  timeZone: BIT_TIME_ZONE,
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false
+});
+
+const bitYearFormatter = new Intl.DateTimeFormat('ja-JP', {
+  timeZone: BIT_TIME_ZONE,
+  year: 'numeric'
+});
+
+export function formatBitDateTime(d: Date): string {
+  const values = Object.fromEntries(bitDateTimeFormatter.formatToParts(d).map((part) => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day} ${values.hour}:${values.minute}`;
+}
+
+export function getBitYear(d: Date): number {
+  return Number(bitYearFormatter.format(d));
+}
+
 export function joinPageSubtitleText(...parts: Array<string | null | undefined>): string | null {
   const normalized = parts
     .map((part) => (typeof part === 'string' ? part.trim() : ''))

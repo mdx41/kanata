@@ -1,6 +1,6 @@
 import type { CollectionEntry } from 'astro:content';
 import { getPublished, getPageSlice, getTotalPages, type GetPublishedOptions } from './content';
-import { createWithBase, formatDateTime } from '../utils/format';
+import { createWithBase, formatBitDateTime, getBitYear } from '../utils/format';
 import { deriveMarkdownText, truncateText } from '../utils/excerpt';
 
 export type BitsEntry = CollectionEntry<'bits'>;
@@ -72,7 +72,7 @@ const buildBitsYearOptions = (bits: readonly BitsEntry[]): BitsYearOption[] => {
   const yearCountMap = new Map<number, number>();
 
   for (const bit of bits) {
-    const year = bit.data.date.getFullYear();
+    const year = getBitYear(bit.data.date);
     yearCountMap.set(year, (yearCountMap.get(year) ?? 0) + 1);
   }
 
@@ -150,8 +150,8 @@ const buildBitsIndex = async (pageSize: number) => {
       text: derivedText.text,
       excerpt: derivedText.excerpt,
       date: bit.data.date ? bit.data.date.toISOString() : null,
-      dateLabel: bit.data.date ? formatDateTime(bit.data.date) : null,
-      year: bit.data.date ? bit.data.date.getFullYear() : null,
+      dateLabel: bit.data.date ? formatBitDateTime(bit.data.date) : null,
+      year: bit.data.date ? getBitYear(bit.data.date) : null,
       page,
       href: `${withBase(getBitsPagePath(page))}#${getBitAnchorId(bit.id)}`,
       thumbnail: firstImage

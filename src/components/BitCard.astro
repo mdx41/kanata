@@ -1,6 +1,6 @@
 ---
 import { type BitsEntry, getBitAnchorId } from '../lib/bits';
-import { createWithBase, formatDateTime } from '../utils/format';
+import { createWithBase, formatBitDateTime } from '../utils/format';
 import { getThemeSettings } from '../lib/theme-settings';
 
 const {
@@ -166,6 +166,6 @@ const getImageFetchPriority = (prioritize: boolean) => (prioritize ? 'high' : un
         ) : null}
       </div>
     ) : null}
-    <div>{formatDateTime(bit.data.date)}</div>
+    <div>{formatBitDateTime(bit.data.date)}</div>
   </div>
 </article>
