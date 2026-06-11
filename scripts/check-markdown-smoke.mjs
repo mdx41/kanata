@@ -1,3 +1,5 @@
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 import { readSmokeFixtureHtml, reportSmokeCheckResult } from './smoke-utils.mjs';
 
 const hasClass = (html, className) => {
@@ -154,6 +156,24 @@ for (const group of checkGroups) {
   } else {
     failedIds.push(...groupFailedIds);
   }
+}
+
+try {
+  const articleHtml = await readFile(
+    path.resolve('dist', 'archive', 'card-game-six-months-2025', 'index.html'),
+    'utf8'
+  );
+  const articleFigure = getArticleFigureBlock(articleHtml);
+
+  if (
+    !articleFigure
+    || !/alt="ロルカナで引いたカード"/.test(articleFigure)
+    || !/<figcaption[\s>][\s\S]*あるあるですが/.test(articleFigure)
+  ) {
+    failedIds.push('image-caption.real-article');
+  }
+} catch {
+  failedIds.push('image-caption.real-article');
 }
 
 reportSmokeCheckResult('Markdown smoke check', failedIds);

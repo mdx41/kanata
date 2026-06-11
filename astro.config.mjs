@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import remarkDirective from 'remark-directive';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
+import rehypeImageCaption from './src/plugins/rehype-image-caption.mjs';
 import remarkCallout from './src/plugins/remark-callout.mjs';
 import remarkImageCaption from './src/plugins/remark-image-caption.mjs';
 import remarkLinkCard from './src/plugins/remark-link-card.mjs';
@@ -161,7 +162,7 @@ export default defineConfig({
   },
   markdown: {
     remarkPlugins: [remarkDirective, remarkCallout, remarkImageCaption, remarkLinkCard],
-    rehypePlugins: [rehypeRaw, [rehypeSanitize, sanitizeSchema]],
+    rehypePlugins: [rehypeRaw, rehypeImageCaption, [rehypeSanitize, sanitizeSchema]],
     shikiConfig: {
       themes: {
         light: 'github-light',
