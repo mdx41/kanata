@@ -3,7 +3,15 @@
 }
 
 .prose figure.article-figure {
-  margin: 22px 0;
+  margin: 22px auto;
+}
+
+.prose figure.article-figure > :is(img, picture) {
+  max-width: 75%;
+}
+
+.prose figure.article-figure > picture > img {
+  max-width: 100%;
 }
 
 .prose figure > :is(img, picture) {
@@ -21,12 +29,26 @@
 }
 
 @media (max-width: 900px) {
+  .prose figure.article-figure > :is(img, picture) {
+    max-width: 92%;
+  }
+
   .prose figure > :is(img, picture) {
     max-width: 92%;
   }
 
+  .prose figure.article-figure > picture > img {
+    max-width: 100%;
+  }
+
   .prose figure > picture > img {
     max-width: 92%;
+  }
+}
+
+@media (max-width: 640px) {
+  .prose figure.article-figure > :is(img, picture) {
+    max-width: 100%;
   }
 }
 
