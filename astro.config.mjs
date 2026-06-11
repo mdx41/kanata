@@ -6,6 +6,7 @@ import remarkDirective from 'remark-directive';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import remarkCallout from './src/plugins/remark-callout.mjs';
+import remarkImageCaption from './src/plugins/remark-image-caption.mjs';
 import remarkLinkCard from './src/plugins/remark-link-card.mjs';
 import shikiToolbar from './src/plugins/shiki-toolbar.mjs';
 import { site, hasSiteUrl } from './site.config.mjs';
@@ -97,7 +98,7 @@ const sanitizeSchema = {
     img: mergeAttrs(getSchemaAttrs('img'), ['loading', 'decoding', 'width', 'height']),
     source: mergeAttrs(getSchemaAttrs('source'), ['srcset', 'srcSet', 'type', 'media', 'sizes']),
     ul: [['className', 'gallery', 'cols-2', 'cols-3', 'contains-task-list']],
-    figure: [['className', 'figure']],
+    figure: [['className', 'figure', 'article-figure']],
     figcaption: [['className', 'figure-caption']],
     div: mergeAttrs(getSchemaAttrs('div'), ['dataIcon', 'dataLang', 'dataLines', 'data-icon', 'data-lang', 'data-lines']),
     p: mergeAttrs(getSchemaAttrs('p'), ['dataIcon', 'data-icon']),
@@ -159,7 +160,7 @@ export default defineConfig({
     }
   },
   markdown: {
-    remarkPlugins: [remarkDirective, remarkCallout, remarkLinkCard],
+    remarkPlugins: [remarkDirective, remarkCallout, remarkImageCaption, remarkLinkCard],
     rehypePlugins: [rehypeRaw, [rehypeSanitize, sanitizeSchema]],
     shikiConfig: {
       themes: {

@@ -2,6 +2,10 @@
   margin: 18px 0;
 }
 
+.prose figure.article-figure {
+  margin: 22px 0;
+}
+
 .prose figure > :is(img, picture) {
   display: block;
   max-width: 100%;
@@ -35,6 +39,11 @@
   margin-right: auto;
   font-family: "LXGW WenKai Lite","Kaiti SC","STKaiti",serif;
   color: var(--muted);
+}
+
+.prose figure.article-figure > figcaption {
+  margin-top: 8px;
+  line-height: 1.7;
 }
 
 @media (max-width: 900px) {

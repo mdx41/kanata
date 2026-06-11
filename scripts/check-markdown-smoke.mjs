@@ -24,6 +24,13 @@ const getGalleryBlock = (html) => {
   return match ? match[1] : '';
 };
 
+const getArticleFigureBlock = (html) => {
+  const match = html.match(
+    /<figure[^>]*\bclass="[^"]*\barticle-figure\b[^"]*"[^>]*>([\s\S]*?)<\/figure>/i
+  );
+  return match ? match[1] : '';
+};
+
 const checkGroups = [
   {
     label: 'Callout check',
@@ -83,6 +90,31 @@ const checkGroups = [
       {
         id: 'figure.caption',
         test: (html) => /<figcaption[^>]*\bclass="[^"]*\bfigure-caption\b/.test(getFigureBlock(html))
+      }
+    ]
+  },
+  {
+    label: 'Image caption check',
+    checks: [
+      {
+        id: 'image-caption.wrapper',
+        test: (html) => /<figure[^>]*\bclass="[^"]*\barticle-figure\b/.test(html)
+      },
+      {
+        id: 'image-caption.media',
+        test: (html) => /<img\b/i.test(getArticleFigureBlock(html))
+      },
+      {
+        id: 'image-caption.caption',
+        test: (html) => /<figcaption[\s>][\s\S]*Smoke fixture caption/.test(getArticleFigureBlock(html))
+      },
+      {
+        id: 'image-caption.inline-markdown',
+        test: (html) => /<code>code<\/code>/.test(getArticleFigureBlock(html)) && /<a href="https:\/\/example.com"/.test(getArticleFigureBlock(html))
+      },
+      {
+        id: 'image-caption.normal-emphasis',
+        test: (html) => /This paragraph keeps <em>normal emphasis<\/em> inline\./.test(html)
       }
     ]
   },

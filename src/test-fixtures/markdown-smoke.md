@@ -27,6 +27,14 @@ console.log(smoke);
   <figcaption class="figure-caption">Smoke fixture standalone figure</figcaption>
 </figure>
 
+## Image Caption
+
+![Smoke fixture caption image](/images/archive/demo-archive-01.webp)
+
+*Smoke fixture caption with `code` and [link](https://example.com).*
+
+This paragraph keeps *normal emphasis* inline.
+
 ## Gallery
 
 <ul class="gallery">
