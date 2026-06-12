@@ -181,7 +181,7 @@ const statItems = overview && wordMetric
             最近の公開
           </h3>
           {hasMaintainerDrafts ? (
-            <span class="admin-site-overview__recent-draft-note">草稿仅 DEV 可见</span>
+            <span class="admin-site-overview__recent-draft-note">下書きは開発者のみに表示されます</span>
           ) : null}
         </div>
         {
@@ -218,9 +218,9 @@ const statItems = overview && wordMetric
         <div class="admin-site-overview__section-head admin-site-overview__section-head--split">
           <h3 id="admin-overview-activity">
             <AdminIcon name="activity" class="admin-site-overview__icon" size={14} />
-            執筆活动
+            執筆活動
           </h3>
-          <span class="admin-site-overview__activity-range">最近 90 天</span>
+          <span class="admin-site-overview__activity-range">直近 90 日間</span>
         </div>
         {
           overview.writingActivity.length > 0 ? (

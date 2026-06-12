@@ -35,7 +35,7 @@ const { homeIntroMaxLength } = Astro.props;
               </span>
               <label class="admin-label__toggle" for="home-show-hero">
                 <input id="home-show-hero" type="checkbox" checked />
-                <span>展示</span>
+                <span>表示</span>
               </label>
             </div>
             <div class="admin-images-field-input">
@@ -94,11 +94,11 @@ const { homeIntroMaxLength } = Astro.props;
     <div class="admin-field admin-field--full">
       <div class="admin-label admin-label--split">
         <span class="admin-label__copy">
-          <label class="admin-label__main" for="home-intro-lead">首页导语主文案</label>
+          <label class="admin-label__main" for="home-intro-lead">ホームページの紹介文</label>
         </span>
         <label class="admin-label__toggle" for="home-show-intro-lead">
           <input id="home-show-intro-lead" type="checkbox" checked />
-          <span>展示</span>
+          <span>表示</span>
         </label>
       </div>
       <textarea class="admin-field__control admin-field__control--compact-textarea" id="home-intro-lead" rows="2" maxlength={homeIntroMaxLength}></textarea>
@@ -106,12 +106,12 @@ const { homeIntroMaxLength } = Astro.props;
     <div class="admin-field admin-field--full">
       <div class="admin-label admin-label--split">
         <span class="admin-label__copy">
-          <label class="admin-label__main" for="home-intro-more">首页导语补充文案</label>
+          <label class="admin-label__main" for="home-intro-more">ホームページの紹介補足</label>
           <span class="admin-label__hint">（固定形式：補足文 + リンク + 任意の「または」 + リンク）</span>
         </span>
         <label class="admin-label__toggle" for="home-show-intro-more">
           <input id="home-show-intro-more" type="checkbox" checked />
-          <span>展示</span>
+          <span>表示</span>
         </label>
       </div>
       <div class="admin-inline-builder admin-inline-builder--intro-more" role="group" aria-label="トップページ導入文の補足リンク編集">
@@ -120,7 +120,7 @@ const { homeIntroMaxLength } = Astro.props;
           class="admin-field__control admin-inline-builder__text"
           rows="1"
           maxlength={homeIntroMaxLength}
-          aria-label="首页导语补充文案"
+          aria-label="ホームページの紹介補足"
         ></textarea>
         <span class="admin-inline-builder__select-group">
           <select
@@ -165,7 +165,7 @@ const { homeIntroMaxLength } = Astro.props;
         </span>
       </div>
       <p class="admin-help">
-        补充导语预览：<code id="home-intro-more-preview" class="admin-help__preview-value">更多文章请访问 归档。</code>
+        補足文プレビュー：<code id="home-intro-more-preview" class="admin-help__preview-value">ホームページに補足文はありません。</code>
       </p>
     </div>
   </div>

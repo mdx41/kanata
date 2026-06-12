@@ -30,21 +30,21 @@ const { footerStartYearMin, footerStartYearMax, socialCustomLimit } = Astro.prop
     </label>
     <label class="admin-field">
       <span class="admin-label">
-        <span class="admin-label__main">站点语言</span>
-        <span class="admin-label__hint">（默认值为 zh-CN）</span>
+        <span class="admin-label__main">サイト言語</span>
+        <span class="admin-label__hint">（デフォルト zh-CN）</span>
       </span>
       <input class="admin-field__control" id="site-default-locale" type="text" autocomplete="off" />
     </label>
     <label class="admin-field admin-field--full">
       <span class="admin-label">
-        <span class="admin-label__main">默认 SEO 描述</span>
+        <span class="admin-label__main">デフォルトのSEO記述</span>
         <span class="admin-label__hint">（検索結果と共有時の要約に使用）</span>
       </span>
       <textarea class="admin-field__control admin-field__control--singleline-textarea" id="site-description" rows="1"></textarea>
     </label>
     <label class="admin-field">
       <span class="admin-label">
-        <span class="admin-label__main">页脚年份</span>
+        <span class="admin-label__main">ページフッター</span>
         <span class="admin-label__hint">（終了年は現在年を自動で使います）</span>
       </span>
       <span class="admin-year-range">
@@ -77,26 +77,26 @@ const { footerStartYearMin, footerStartYearMax, socialCustomLimit } = Astro.prop
     </label>
     <label class="admin-field">
       <span class="admin-label">
-        <span class="admin-label__main">页脚版权文案</span>
+        <span class="admin-label__main">フッターのコピーライト</span>
       </span>
       <input class="admin-field__control" id="site-footer-copyright" type="text" autocomplete="off" aria-describedby="site-footer-preview" />
     </label>
     <div class="admin-field admin-field--full">
       <p id="site-footer-preview" class="admin-help">
-        页脚预览：<code id="site-footer-preview-value">© {footerStartYearMax} Whono · Theme Demo · by cxro</code>
+        フッタープレビュー：<code id="site-footer-preview-value">© {footerStartYearMax} Whono · Theme Demo · by cxro</code>
       </p>
     </div>
     <div class="admin-field admin-field--full">
       <div class="admin-label admin-label--split">
         <span class="admin-label__copy">
           <label class="admin-label__main" for="site-admin-overview-hidden-message">
-            <code>/admin/</code> Overview 公开访问（不收录）
+            <code>/admin/</code> Overview 一般公開（対象外）
           </label>
           <span class="admin-label__hint">（ビルド後に反映されます。公開を閉じると、このページには下の文言だけを表示します）</span>
         </span>
         <label class="admin-label__toggle" for="site-admin-overview-public-visible">
           <input id="site-admin-overview-public-visible" type="checkbox" checked />
-          <span>公开</span>
+          <span>公開</span>
         </label>
       </div>
       <input

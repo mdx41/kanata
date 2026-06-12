@@ -27,22 +27,22 @@ const { navIdOrder } = Astro.props;
     <div class="admin-sidebar-layout__main">
       <label class="admin-field">
         <span class="admin-label">
-          <span class="admin-label__main">侧栏站点名</span>
+          <span class="admin-label__main">サイト名</span>
           <span class="admin-label__hint">（左側のサイトタイトルに表示）</span>
         </span>
         <input class="admin-field__control" id="shell-brand-title" type="text" autocomplete="off" />
       </label>
       <label class="admin-field">
         <span class="admin-label">
-          <span class="admin-label__main">侧栏引用文案</span>
+          <span class="admin-label__main">サイドバーコメント</span>
           <span class="admin-label__hint">（改行表示に対応）</span>
         </span>
         <textarea class="admin-field__control" id="shell-quote" rows="4"></textarea>
       </label>
       <div class="admin-field admin-field--sidebar-divider">
         <span class="admin-label">
-          <span class="admin-label__main">侧栏分隔线</span>
-          <span class="admin-label__hint">（控制与正文间的分隔强度）</span>
+          <span class="admin-label__main">サイドバー区切り線</span>
+          <span class="admin-label__hint">（本文と本文間の区切り強度）</span>
         </span>
         <div class="admin-segmented" role="radiogroup" aria-label="侧栏分隔线样式">
           {
@@ -64,7 +64,7 @@ const { navIdOrder } = Astro.props;
 
       <div class="admin-subgroup admin-subgroup--sidebar-icons">
         <p class="admin-subtitle">
-          <span class="admin-subtitle__main">侧栏图标</span>
+          <span class="admin-subtitle__main">サイドバーアイコン</span>
           <span class="admin-subtitle__hint">（下部に表示するアイコンを選択）</span>
         </p>
         <div class="admin-sidebar-icon-grid" role="group" aria-label="侧栏图标显隐">
@@ -130,25 +130,25 @@ const { navIdOrder } = Astro.props;
 
     <div class="admin-subgroup admin-subgroup--sidebar-nav">
       <p class="admin-subtitle">
-        <span class="admin-subtitle__main">侧栏导航</span>
+        <span class="admin-subtitle__main">サイドバーガイド</span>
         <span id="admin-nav-ornament-hint" class="admin-subtitle__hint">
           （接尾辞は短いテキストや記号に対応します。空欄で非表示、{ADMIN_NAV_ORNAMENT_DEFAULT} を入力するとデフォルトへ戻ります。）
         </span>
       </p>
       <div class="admin-nav-grid admin-nav-grid--compact">
         <div class="admin-nav-header" aria-hidden="true">
-          <span>排序</span>
+          <span>ソート</span>
           <span>ページ ID</span>
-          <span>导航名称</span>
-          <span>导航后缀</span>
-          <span>是否展示</span>
+          <span>ナビゲーション名</span>
+          <span>接尾辞</span>
+          <span>表示</span>
         </div>
         {
           navIdOrder.map((id, index) => (
             <div class="admin-row admin-row--interactive admin-row--table admin-nav-row" data-nav-id={id}>
               <label class="admin-field admin-nav-field admin-nav-field--order">
-                <span class="admin-nav-cell-label">排序</span>
-                <span class="sr-only">{id} 排序</span>
+                <span class="admin-nav-cell-label">ソート</span>
+                <span class="sr-only">{id} ソート</span>
                 <span class="admin-social-order-frame admin-nav-order-frame">
                   <span class="admin-social-order-frame__mark" aria-hidden="true">[</span>
                   <input
@@ -169,8 +169,8 @@ const { navIdOrder } = Astro.props;
                 <span class="admin-nav-id__text">{id}</span>
               </p>
               <label class="admin-field admin-nav-field admin-nav-field--name">
-                <span class="admin-nav-cell-label">导航名称</span>
-                <span class="sr-only">{id} 导航名称</span>
+                <span class="admin-nav-cell-label">ナビゲーション名</span>
+                <span class="sr-only">{id} ナビゲーション名</span>
                 <input
                   class="admin-field__control admin-field__control--soft"
                   data-nav-field="label"
@@ -180,7 +180,7 @@ const { navIdOrder } = Astro.props;
                 />
               </label>
               <label class="admin-field admin-nav-field admin-nav-field--ornament">
-                <span class="admin-nav-cell-label">导航后缀</span>
+                <span class="admin-nav-cell-label">接尾辞</span>
                 <span class="sr-only">{id} ナビゲーションの接尾辞。空欄なら表示しません</span>
                 <input
                   class="admin-field__control admin-field__control--soft"
@@ -193,7 +193,7 @@ const { navIdOrder } = Astro.props;
                 />
               </label>
               <label class="admin-toggle">
-                <span class="admin-nav-cell-label">是否展示</span>
+                <span class="admin-nav-cell-label">表示</span>
                 <span class="admin-toggle__control">
                   <input
                     data-nav-field="visible"
