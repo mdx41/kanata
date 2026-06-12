@@ -34,7 +34,7 @@ if (!isAdminContentCollectionKey(collectionParam ?? '')) {
 const collection: AdminContentCollectionKey = collectionParam;
 
 const isDev = import.meta.env.DEV;
-// Content Console 暂停对 dev 环境开放，保留实现供后续前端技术栈重构恢复。
+// コンテンツ管理は現在 dev 環境でも一時停止中。実装は将来の管理UI再構築用に残しています。
 const isAdminContentConsoleEnabled: boolean = false;
 const shouldShowContentConsole = isDev && isAdminContentConsoleEnabled;
 const shouldShowAdminNav = isDev;
@@ -79,8 +79,8 @@ const adminContentBootstrap = selectedEntryEditorPayload?.writable
 const adminImageListEndpoint = withBase(ADMIN_IMAGE_LIST_API_PATH);
 const adminImageMetaEndpoint = withBase(ADMIN_IMAGE_META_API_PATH);
 const contentConsoleSubtitle = pageData
-  ? `${pageData.collectionLabel} · ${selectedEntryEditorPayload?.writable ? 'frontmatter 编辑' : '只读索引'}`
-  : '内容索引';
+  ? `${pageData.collectionLabel} · ${selectedEntryEditorPayload?.writable ? 'frontmatter 編集' : '読み取り専用インデックス'}`
+  : 'コンテンツ索引';
 
 type AdminBitsImageRow = {
   src: string;
@@ -172,17 +172,17 @@ const activeFilterCount = pageData
   : 0;
 ---
 
-<AdminLayout title="Content Console" stylesHref={adminStylesHref}>
+<AdminLayout title="コンテンツ管理" stylesHref={adminStylesHref}>
   <AdminShell
     currentRoute="content"
-    title="Content Console"
+    title="コンテンツ管理"
     subtitle={contentConsoleSubtitle}
     showNav={shouldShowAdminNav}
   >
     {shouldShowContentConsole ? (
       <div slot="status" class="admin-status-slot">
         <p id="admin-content-status-live" class="admin-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
-        <p id="admin-content-status" class="admin-status" data-state="idle">等待选择条目</p>
+        <p id="admin-content-status" class="admin-status" data-state="idle">項目を選択してください</p>
       </div>
     ) : null}
 
@@ -193,14 +193,14 @@ const activeFilterCount = pageData
             <div class="admin-content-toolbar__bar">
               <div class="admin-content-toolbar__intro">
                 <p class="admin-overview-card__eyebrow">Content</p>
-                <h2 class="admin-overview-card__title">{pageData.collectionLabel} 列表</h2>
+                <h2 class="admin-overview-card__title">{pageData.collectionLabel} 一覧</h2>
                 <p class="admin-overview-card__body">
-                  当前命中 {pageData.filteredCount} / {pageData.totalCount} 条内容，
-                  当前第 {pageData.currentPage} / {pageData.totalPages} 页。
-                  {activeFilterCount > 0 ? ` 已启用 ${activeFilterCount} 项筛选。` : ' 当前按默认时间顺序显示。'}
+                  該当 {pageData.filteredCount} / {pageData.totalCount} 件、
+                  現在 {pageData.currentPage} / {pageData.totalPages} ページ目です。
+                  {activeFilterCount > 0 ? ` ${activeFilterCount} 件のフィルターを適用中。` : ' 現在は標準の日時順で表示しています。'}
                 </p>
               </div>
-              <div class="admin-content-switcher" role="tablist" aria-label="内容集合切换">
+              <div class="admin-content-switcher" role="tablist" aria-label="コンテンツ種別の切り替え">
                 {
                   ADMIN_CONTENT_COLLECTIONS.map((item) => {
                     const href = withBase(getAdminContentCollectionHref(item));
@@ -221,12 +221,12 @@ const activeFilterCount = pageData
 
             <div class="admin-content-filter-grid">
               <label class="admin-field admin-content-field admin-content-field--query">
-                <span class="admin-field__label">搜索 title / entry.id / slug</span>
-                <input class="admin-field__control" type="search" name="q" value={pageData.filterState.query} placeholder="支持空格分词" />
+                <span class="admin-field__label">title / entry.id / slug を検索</span>
+                <input class="admin-field__control" type="search" name="q" value={pageData.filterState.query} placeholder="スペース区切りで検索できます" />
               </label>
 
               <label class="admin-field admin-content-field">
-                <span class="admin-field__label">草稿筛选</span>
+                <span class="admin-field__label">下書きフィルター</span>
                 <select class="admin-field__control" name="draft">
                   {
                     ADMIN_CONTENT_DRAFT_OPTIONS.map((option) => (
@@ -239,7 +239,7 @@ const activeFilterCount = pageData
               </label>
 
               <label class="admin-field admin-content-field">
-                <span class="admin-field__label">排序</span>
+                <span class="admin-field__label">並び順</span>
                 <select class="admin-field__control" name="sort">
                   {
                     ADMIN_CONTENT_SORT_OPTIONS.map((option) => (
@@ -254,9 +254,9 @@ const activeFilterCount = pageData
               {
                 pageData.tagOptions.length > 0 ? (
                   <label class="admin-field admin-content-field">
-                    <span class="admin-field__label">标签</span>
+                    <span class="admin-field__label">タグ</span>
                     <select class="admin-field__control" name="tag">
-                      <option value="">全部标签</option>
+                      <option value="">すべてのタグ</option>
                       {
                         pageData.tagOptions.map((option) => (
                           <option value={option.value} selected={option.value === pageData.filterState.tag}>
@@ -272,9 +272,9 @@ const activeFilterCount = pageData
               {
                 pageData.yearOptions.length > 0 ? (
                   <label class="admin-field admin-content-field">
-                    <span class="admin-field__label">年份</span>
+                    <span class="admin-field__label">年</span>
                     <select class="admin-field__control" name="year">
-                      <option value="">全部年份</option>
+                      <option value="">すべての年</option>
                       {
                         pageData.yearOptions.map((option) => (
                           <option
@@ -294,13 +294,13 @@ const activeFilterCount = pageData
             <div class="admin-content-toolbar__footer">
               <p class="admin-content-toolbar__hint">
                 {pageData.hasActiveFilters
-                  ? '当前 URL 已记录筛选状态，可以直接保留这次检索结果。'
-                  : '选择条目后会在下方显示索引详情；essay / bits 会补充 frontmatter 编辑卡片，memo 继续保持只读。'}
+                  ? '現在のURLにフィルター状態が記録されているため、この検索結果をそのまま保持できます。'
+                  : '項目を選ぶと下に索引の詳細を表示します。essay / bits は frontmatter 編集カードを追加し、memo は読み取り専用のままです。'}
               </p>
               <div class="admin-overview-card__actions">
-                <button class="admin-btn admin-btn--secondary" type="submit">应用筛选</button>
-                <a class="admin-btn admin-btn--ghost" href={resetHref}>重置条件</a>
-                <a class="admin-btn admin-btn--ghost" href={withBase('/admin/content/')}>返回 Content 总入口</a>
+                <button class="admin-btn admin-btn--secondary" type="submit">フィルターを適用</button>
+                <a class="admin-btn admin-btn--ghost" href={resetHref}>条件をリセット</a>
+                <a class="admin-btn admin-btn--ghost" href={withBase('/admin/content/')}>コンテンツ管理トップへ戻る</a>
               </div>
             </div>
           </form>
@@ -310,10 +310,10 @@ const activeFilterCount = pageData
               <article class="admin-overview-card admin-content-inspector">
                 <div class="admin-content-inspector__head">
                   <div class="admin-content-inspector__intro">
-                    <p class="admin-overview-card__eyebrow">当前条目</p>
+                    <p class="admin-overview-card__eyebrow">現在の項目</p>
                     <h2 class="admin-overview-card__title">{pageData.selectedEntry.title}</h2>
                     <p class="admin-overview-card__body">
-                      当前继续展示路径、frontmatter 与受控摘要；若 collection 属于首批可写范围，会在下方补充 frontmatter 编辑卡片。
+                      パス、frontmatter、管理用の要約を表示します。書き込み対象の collection では、下に frontmatter 編集カードを表示します。
                     </p>
                   </div>
                   <div class="admin-overview-card__actions">
@@ -321,10 +321,10 @@ const activeFilterCount = pageData
                       type="button"
                       class="admin-btn admin-btn--secondary"
                       data-admin-copy-button
-                      data-copy-label="相对路径"
+                      data-copy-label="相対パス"
                       data-copy-text={selectedEntryRelativePath}
                     >
-                      复制路径
+                      パスをコピー
                     </button>
                     <button
                       type="button"
@@ -333,11 +333,11 @@ const activeFilterCount = pageData
                       data-copy-label="entry.id"
                       data-copy-text={pageData.selectedEntry.id}
                     >
-                      复制 entry.id
+                      entry.id をコピー
                     </button>
                     {
                       pageData.selectedEntry.publicHref ? (
-                        <a class="admin-btn admin-btn--ghost" href={withBase(pageData.selectedEntry.publicHref)}>查看公开页</a>
+                        <a class="admin-btn admin-btn--ghost" href={withBase(pageData.selectedEntry.publicHref)}>公開ページを見る</a>
                       ) : null
                     }
                   </div>
@@ -351,7 +351,7 @@ const activeFilterCount = pageData
 
                 <div class="admin-content-inspector__grid">
                   <section class="admin-content-inspector__block">
-                    <h3 class="admin-content-frontmatter__title">索引元信息</h3>
+                    <h3 class="admin-content-frontmatter__title">索引メタ情報</h3>
                     <dl class="admin-data-meta admin-content-detail-meta">
                       <dt class="admin-data-meta__label">collection</dt>
                       <dd class="admin-data-meta__value">{pageData.selectedEntry.collection}</dd>
@@ -361,7 +361,7 @@ const activeFilterCount = pageData
                       <dd class="admin-data-meta__value"><code>{selectedEntryRelativePath}</code></dd>
                       <dt class="admin-data-meta__label">public slug</dt>
                       <dd class="admin-data-meta__value">
-                        {pageData.selectedEntry.slug ? <code>{pageData.selectedEntry.slug}</code> : '(未设置)'}
+                        {pageData.selectedEntry.slug ? <code>{pageData.selectedEntry.slug}</code> : '(未設定)'}
                       </dd>
                       <dt class="admin-data-meta__label">date</dt>
                       <dd class="admin-data-meta__value">{pageData.selectedEntry.dateLabel}</dd>
@@ -383,9 +383,9 @@ const activeFilterCount = pageData
                   </section>
 
                   <section class="admin-content-inspector__block admin-content-inspector__block--summary">
-                    <h3 class="admin-content-frontmatter__title">受控摘要</h3>
+                    <h3 class="admin-content-frontmatter__title">管理用の要約</h3>
                     <p class="admin-overview-card__body">
-                      {pageData.selectedEntry.excerpt ?? '当前条目未生成可展示的受控摘要。'}
+                      {pageData.selectedEntry.excerpt ?? 'この項目には表示できる管理用の要約がまだ生成されていません。'}
                     </p>
                   </section>
                 </div>
@@ -400,10 +400,10 @@ const activeFilterCount = pageData
                   <div class="admin-content-panel__head">
                     <div>
                       <p class="admin-overview-card__eyebrow">Frontmatter Editor</p>
-                      <h2 class="admin-overview-card__title">首批可写字段</h2>
+                       <h2 class="admin-overview-card__title">最初に書き込み対応する項目</h2>
                       <p class="admin-overview-card__body">
-                        当前仅开放 {selectedEntryEditorPayload.collection} 的 frontmatter 写回。保存前可先执行
-                        dry-run；正文内容继续保持只读，不在本轮进入浏览器写盘。
+                         現在は {selectedEntryEditorPayload.collection} の frontmatter 書き戻しのみ有効です。保存前に
+                         dry-run を実行できます。本文は引き続き読み取り専用で、この段階ではブラウザから書き込みません。
                       </p>
                     </div>
                     <div class="admin-content-results__meta">
@@ -417,8 +417,8 @@ const activeFilterCount = pageData
                     titleId="admin-content-editor-error-title"
                     messageId="admin-content-editor-error-message"
                     listId="admin-content-editor-error-list"
-                    title="frontmatter 未写入"
-                    label="写入异常"
+                     title="frontmatter は書き込まれていません"
+                     label="書き込みエラー"
                   />
 
                   <form id="admin-content-editor-form" class="admin-content-editor__form">
@@ -525,7 +525,7 @@ const activeFilterCount = pageData
                                   id="admin-content-image-add"
                                   type="button"
                                 >
-                                  + 添加图片
+                                  + 画像を追加
                                 </button>
                               </div>
                               <input
@@ -535,7 +535,7 @@ const activeFilterCount = pageData
                                 value={selectedEntryEditorPayload.values.imagesText}
                               />
                               <p class="admin-content-image-editor__hint">
-                                保持现有 `bits.images` 协议：本地相对路径或 `https://` 远程 URL；宽高可留空，本地图片可通过选择器自动回填。
+                                既存の `bits.images` 形式を維持します。ローカル相対パスまたは `https://` のリモートURLを指定できます。幅と高さは空欄でもよく、ローカル画像は選択ツールから自動入力できます。
                               </p>
                               <p class="admin-content-editor__error" data-field-error="imagesText" hidden></p>
                               <div class="admin-content-image-editor" id="admin-content-image-editor">
@@ -543,7 +543,7 @@ const activeFilterCount = pageData
                                   bitsImageRows.map((image, index) => (
                                     <div class="admin-row admin-row--muted admin-row--interactive admin-content-image-row" data-admin-content-image-row>
                                       <div class="admin-content-image-row__head">
-                                        <strong class="admin-content-image-row__title">图片 #{index + 1}</strong>
+                                        <strong class="admin-content-image-row__title">画像 #{index + 1}</strong>
                                         <button
                                           class="admin-btn admin-btn--ghost admin-content-image-row__remove"
                                           type="button"
@@ -569,7 +569,7 @@ const activeFilterCount = pageData
                                               type="button"
                                               data-admin-content-image-pick
                                             >
-                                              选择本地图片
+                                              ローカル画像を選択
                                             </button>
                                           </div>
                                           <p class="admin-content-editor__error" data-field-error={`images[${index}].src`} hidden></p>
@@ -590,7 +590,7 @@ const activeFilterCount = pageData
                                         </label>
                                       </div>
                                       <div class="admin-content-image-row__footer">
-                                        <p class="admin-content-image-row__meta" data-admin-content-image-meta>等待选择图片或输入路径</p>
+                                        <p class="admin-content-image-row__meta" data-admin-content-image-meta>画像を選択するかパスを入力してください</p>
                                         <div class="admin-content-image-row__preview" data-admin-content-image-preview hidden>
                                           <img alt="" loading="lazy" decoding="async" data-admin-content-image-preview-img />
                                         </div>
@@ -602,7 +602,7 @@ const activeFilterCount = pageData
                               <template id="admin-content-image-row-template">
                                 <div class="admin-row admin-row--muted admin-row--interactive admin-content-image-row" data-admin-content-image-row>
                                   <div class="admin-content-image-row__head">
-                                    <strong class="admin-content-image-row__title">图片</strong>
+                                    <strong class="admin-content-image-row__title">画像</strong>
                                     <button
                                       class="admin-btn admin-btn--ghost admin-content-image-row__remove"
                                       type="button"
@@ -627,7 +627,7 @@ const activeFilterCount = pageData
                                           type="button"
                                           data-admin-content-image-pick
                                         >
-                                          选择本地图片
+                                          ローカル画像を選択
                                         </button>
                                       </div>
                                       <p class="admin-content-editor__error" data-field-error="images[0].src" hidden></p>
@@ -648,7 +648,7 @@ const activeFilterCount = pageData
                                     </label>
                                   </div>
                                   <div class="admin-content-image-row__footer">
-                                    <p class="admin-content-image-row__meta" data-admin-content-image-meta>等待选择图片或输入路径</p>
+                                    <p class="admin-content-image-row__meta" data-admin-content-image-meta>画像を選択するかパスを入力してください</p>
                                     <div class="admin-content-image-row__preview" data-admin-content-image-preview hidden>
                                       <img alt="" loading="lazy" decoding="async" data-admin-content-image-preview-img />
                                     </div>
@@ -670,14 +670,14 @@ const activeFilterCount = pageData
                   </form>
 
                   <article id="admin-content-write-preview" class="admin-overview-card admin-content-editor__preview" hidden>
-                    <p id="admin-content-write-preview-title" class="admin-overview-card__title">dry-run 结果</p>
+                    <p id="admin-content-write-preview-title" class="admin-overview-card__title">dry-run 結果</p>
                     <p id="admin-content-write-preview-body" class="admin-overview-card__body"></p>
                     <ul id="admin-content-write-preview-list" class="admin-content-editor__preview-list"></ul>
                   </article>
 
                   <div class="admin-content-toolbar__footer">
                     <p class="admin-content-toolbar__hint">
-                      真实写盘前会再次执行 revision 校验；若当前条目已被外部修改，后台会拒绝覆盖并要求刷新。
+                      実際に書き込む前に revision を再検証します。現在の項目が外部で変更されている場合、管理画面は上書きを拒否し、更新を求めます。
                     </p>
                     <div class="admin-overview-card__actions">
                       <button id="admin-content-dry-run" class="admin-btn admin-btn--secondary" type="button">执行 dry-run</button>
@@ -690,13 +690,13 @@ const activeFilterCount = pageData
               ) : (
                 <article class="admin-overview-card admin-content-panel admin-content-editor admin-content-editor--readonly">
                   <p class="admin-overview-card__eyebrow">Readonly Schema</p>
-                  <h2 class="admin-overview-card__title">当前 collection 仍保持只读</h2>
+                  <h2 class="admin-overview-card__title">現在の collection は引き続き読み取り専用です</h2>
                   <p class="admin-overview-card__body">
                     {selectedEntryEditorPayload.readonlyReason}
                   </p>
                   <dl class="admin-data-meta admin-content-detail-meta">
                     <dt class="admin-data-meta__label">memo.date</dt>
-                    <dd class="admin-data-meta__value">可选字段，不要求必填</dd>
+                    <dd class="admin-data-meta__value">任意項目のため、必須ではありません</dd>
                     <dt class="admin-data-meta__label">memo.slug</dt>
                     <dd class="admin-data-meta__value">使用普通字符串，不复用 essay 的 slugRule 正则</dd>
                   </dl>
@@ -712,14 +712,14 @@ const activeFilterCount = pageData
                 <h2 class="admin-overview-card__title">{pageData.collectionLabel} 条目</h2>
                 <p class="admin-overview-card__body">
                   {pageData.hasActiveFilters
-                    ? '当前结果已按筛选条件收窄；详情显示在列表上方。'
-                    : '列表优先展示标题、路径、slug 与公开状态，便于快速定位条目。'}
+                    ? '現在の結果はフィルター条件で絞り込まれています。詳細は一覧の上に表示されます。'
+                    : '一覧ではタイトル、パス、slug、公開状態を優先して表示し、項目をすばやく見つけられるようにしています。'}
                 </p>
               </div>
               <div class="admin-content-results__meta">
                 <span class="admin-badge">page {pageData.currentPage}/{pageData.totalPages}</span>
                 <span class="admin-badge">{pageData.pageItems.length} 项</span>
-                {activeFilterCount > 0 ? <span class="admin-badge">筛选 {activeFilterCount}</span> : null}
+                {activeFilterCount > 0 ? <span class="admin-badge">フィルター {activeFilterCount}</span> : null}
               </div>
             </div>
 
@@ -745,7 +745,7 @@ const activeFilterCount = pageData
                                 </p>
                                 <div class="admin-content-item__title-row">
                                   <a class="admin-content-item__title" href={detailHref}>{item.title}</a>
-                                  {isActive ? <span class="admin-badge">当前</span> : null}
+                                  {isActive ? <span class="admin-badge">現在</span> : null}
                                   {item.isDraft ? <span class="admin-badge">draft</span> : null}
                                   {item.archive === false ? <span class="admin-badge">archive off</span> : null}
                                 </div>
@@ -762,7 +762,7 @@ const activeFilterCount = pageData
                                 </div>
                                 <div class="admin-content-item__fact">
                                   <dt>slug</dt>
-                                  <dd>{item.slug ? <code>{item.slug}</code> : '(未设置)'}</dd>
+                                  <dd>{item.slug ? <code>{item.slug}</code> : '(未設定)'}</dd>
                                 </div>
                               </dl>
 
@@ -780,7 +780,7 @@ const activeFilterCount = pageData
 
                             <div class="admin-content-item__actions">
                               <a class:list={['admin-btn', isActive ? 'admin-btn--secondary' : 'admin-btn--ghost']} href={detailHref}>
-                                {isActive ? '当前条目' : '查看详情'}
+                                {isActive ? '現在の項目' : '查看详情'}
                               </a>
                               {
                                 item.publicHref ? (
@@ -798,7 +798,7 @@ const activeFilterCount = pageData
 
                   {
                     pageData.totalPages > 1 ? (
-                      <nav class="admin-content-pagination" aria-label="内容分页">
+                      <nav class="admin-content-pagination" aria-label="コンテンツのページ切り替え">
                         <div class="admin-overview-card__actions">
                           {
                             pageData.currentPage > 1 ? (
@@ -810,7 +810,7 @@ const activeFilterCount = pageData
                                 })}
                                 rel="prev"
                               >
-                                上一页
+                                前のページ
                               </a>
                             ) : null
                           }
@@ -838,7 +838,7 @@ const activeFilterCount = pageData
                                 })}
                                 rel="next"
                               >
-                                下一页
+                                次のページ
                               </a>
                             ) : null
                           }
@@ -849,7 +849,7 @@ const activeFilterCount = pageData
                 </>
               ) : (
                 <p class="admin-content-empty">
-                  当前筛选条件没有命中条目。可以尝试清空搜索词、切换 draft 状态，或移除标签/年份限制。
+                  現在のフィルター条件に一致する項目がありません。検索語を消す、draft 状態を切り替える、タグや年の制限を外すなどを試してください。
                 </p>
               )
             }
@@ -857,7 +857,7 @@ const activeFilterCount = pageData
         </section>
       ) : (
         <AdminReadonlyNotice>
-          后台文章管理与可视化写作正在开发中。
+          管理画面の記事管理とビジュアル編集は開発中です。
         </AdminReadonlyNotice>
       )
     }

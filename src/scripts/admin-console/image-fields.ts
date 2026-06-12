@@ -41,19 +41,19 @@ const FIELD_CONFIGS: readonly ThemeImageFieldConfig[] = [
     field: 'home.heroImageSrc',
     inputId: 'home-hero-image-src',
     buttonSelector: '[data-admin-images-open="home.heroImageSrc"]',
-    pickerTitle: '更换 Hero 图片',
+    pickerTitle: 'Hero 画像を変更',
     pickerDescription: '',
     pickerResetLabel: '恢复默认',
     pickerResetStatus: '已恢复 Hero 默认图',
     pickerFallbackCurrentValue: 'src/assets/hero.png',
-    pickerFallbackCurrentLabel: '默认图片'
+    pickerFallbackCurrentLabel: 'デフォルト画像'
   },
   {
     field: 'page.bits.defaultAuthor.avatar',
     inputId: 'page-bits-author-avatar',
     buttonSelector: '[data-admin-images-open="page.bits.defaultAuthor.avatar"]',
     pickerTitle: '更换 Bits 作者头像',
-    pickerDescription: '仅列出可直接写入 page.bits.defaultAuthor.avatar 的本地 public/** 资源。',
+    pickerDescription: 'page.bits.defaultAuthor.avatar に直接書き込めるローカル public/** リソースのみ表示します。',
     pickerResetLabel: '清空头像',
     pickerResetStatus: '已清空 Bits 默认头像'
   }
@@ -111,8 +111,8 @@ const setPreview = (
       return;
     }
 
-    // DOM sink 前的最后一道边界：用 URL 构造器重新解析，切断来自输入文本的污点数据流。
-    // 这里与上游校验是纵深防御，也让 CodeQL js/xss-through-dom 能识别该 sanitizer。
+    // DOM sink 直前の最後の境界: URL コンストラクタで再解析し、入力テキスト由来の汚染データを切り離す。
+    // 上流の検証に加えた多層防御で、CodeQL js/xss-through-dom が sanitizer として認識できるようにする。
     let reparsedPreviewSrc: string | null = null;
     try {
       if (safePreviewSrc.startsWith('https://')) {
@@ -240,7 +240,7 @@ export const createAdminThemeImageFields = ({
     );
 
     if (!picker) {
-      setMetaText(binding.metaEl, '当前页面未挂载 image picker');
+      setMetaText(binding.metaEl, '現在のページには image picker がマウントされていません');
       return;
     }
 
@@ -267,7 +267,7 @@ export const createAdminThemeImageFields = ({
         binding.previewPlaceholder,
         { kind: 'hidden' }
       );
-      setMetaText(binding.metaEl, error instanceof Error ? error.message : '路径暂时无法读取');
+      setMetaText(binding.metaEl, error instanceof Error ? error.message : 'パスを一時的に読み取れません');
     }
   };
 
@@ -294,7 +294,7 @@ export const createAdminThemeImageFields = ({
     };
 
     binding.input.addEventListener('input', () => {
-      setMetaText(binding.metaEl, '等待确认路径并读取元数据');
+      setMetaText(binding.metaEl, 'パスの確認とメタデータ読み取り待ち');
       setPreview(
         binding.previewWrap,
         binding.previewImg,
@@ -310,7 +310,7 @@ export const createAdminThemeImageFields = ({
     binding.button?.addEventListener('click', () => {
       if (getFieldState(binding.config.field).enabled === false) return;
       if (!picker) {
-        setStatus('warn', '当前页面未挂载 image picker');
+        setStatus('warn', '現在のページには image picker がマウントされていません');
         return;
       }
 
@@ -335,7 +335,7 @@ export const createAdminThemeImageFields = ({
           binding.input.value = item.value;
           binding.input.dispatchEvent(new Event('input', { bubbles: true }));
           binding.input.dispatchEvent(new Event('change', { bubbles: true }));
-          setStatus('ok', `已选择本地图片：${item.value}`);
+          setStatus('ok', `ローカル画像を選択しました：${item.value}`);
         }
       };
 

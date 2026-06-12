@@ -43,10 +43,10 @@ const {
     messageId="admin-error-message"
     listId="admin-error-list"
     title="操作未完成"
-    label="配置异常"
+    label="設定エラー"
     retryAction={{
       id: 'admin-error-retry',
-      label: '重新检测'
+      label: '再チェック'
     }}
     tabindex={-1}
   />
@@ -76,14 +76,14 @@ const {
   <div id="admin-actions" class="admin-actions" data-dirty="false" data-sticky="false">
     <div class="admin-actions__meta">
       <p id="admin-dirty-banner" class="admin-banner admin-banner--dirty" hidden>
-        * 你有未保存更改，离开页面会触发提醒。
+        * 未保存の変更があります。ページを離れると確認が表示されます。
       </p>
       <p id="admin-status-inline" class="admin-status admin-status--inline" data-state="idle" aria-hidden="true">
-        等待加载
+        読み込み待ち
       </p>
     </div>
     <div class="admin-actions__buttons">
-      <button id="admin-validate" class="admin-btn admin-btn--secondary" type="button">检查配置</button>
+      <button id="admin-validate" class="admin-btn admin-btn--secondary" type="button">設定をチェック</button>
       <button id="admin-reset" class="admin-btn admin-btn--ghost" type="button">重置更改</button>
       <button id="admin-save" class="admin-btn admin-btn--primary" type="button">保存</button>
     </div>

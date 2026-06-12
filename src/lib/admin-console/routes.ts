@@ -17,38 +17,38 @@ export const ADMIN_ROUTES = [
   {
     id: 'overview',
     href: '/admin/',
-    label: 'Overview',
-    description: '站点快照'
+    label: '概要',
+    description: 'サイトの状態'
   },
   {
     id: 'theme',
     href: '/admin/theme/',
-    label: 'Theme',
-    description: '主题设置'
+    label: 'テーマ',
+    description: 'テーマ設定'
   },
   {
     id: 'content',
     href: '/admin/content/',
-    label: 'Content',
-    description: '内容索引与 frontmatter 控制台'
+    label: 'コンテンツ',
+    description: 'コンテンツ索引と frontmatter 管理'
   },
   {
     id: 'images',
     href: '/admin/images/',
-    label: 'Images',
-    description: '图片浏览与路径辅助'
+    label: '画像',
+    description: '画像の参照とパス補助'
   },
   {
     id: 'checks',
     href: '/admin/checks/',
-    label: 'Checks',
-    description: '结构化诊断与发布前自检'
+    label: 'チェック',
+    description: '構造チェックと公開前確認'
   },
   {
     id: 'data',
     href: '/admin/data/',
-    label: 'Data',
-    description: '设置导入导出'
+    label: 'データ',
+    description: '設定のインポート / エクスポート'
   }
 ] as const satisfies readonly AdminRouteDefinition[];
 

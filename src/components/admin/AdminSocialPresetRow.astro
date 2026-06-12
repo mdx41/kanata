@@ -18,7 +18,7 @@ interface Props {
 
 const { row } = Astro.props;
 const visibilityLabel = `隐藏 ${row.label}`;
-const removeLabel = `${row.label} 为固定项，不可删除`;
+const removeLabel = `${row.label} は固定項目のため削除できません`;
 ---
 
 <article class="admin-row admin-row--interactive admin-row--table admin-social-row admin-social-row--preset" data-social-preset-row data-social-preset-id={row.id}>
@@ -63,7 +63,7 @@ const removeLabel = `${row.label} 为固定项，不可删除`;
   </div>
 
   <label class="admin-field admin-social-field admin-social-field--href">
-    <span class="admin-social-cell-label">{row.id === 'email' ? '邮箱地址' : '链接地址'}</span>
+    <span class="admin-social-cell-label">{row.id === 'email' ? 'メールアドレス' : 'リンク先'}</span>
     <input
       class="admin-field__control admin-field__control--soft"
       id={row.inputId}

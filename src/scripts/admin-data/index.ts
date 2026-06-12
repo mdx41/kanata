@@ -39,7 +39,7 @@ if (!root) {
   const controlState = queryAdminDataControls();
   if (!controlState.ok) {
     reportAdminDataSetupError(controlState.controls, {
-      message: '页面缺少必要控件，客户端脚本已停止初始化。请刷新页面，或检查模板与控件 id 是否仍保持一致。',
+      message: 'ページに必要なコントロールがないため、クライアントスクリプトの初期化を停止しました。ページを更新するか、テンプレートとコントロールIDが一致しているか確認してください。',
       details: controlState.missing
     });
   } else {
@@ -49,7 +49,7 @@ if (!root) {
 
     if (!bootstrap) {
       console.error('[admin-data] bootstrap 数据无效');
-      ui.showBootstrapError('当前页面未能完成 bootstrap 初始化，请刷新页面或重启开发服务器后重试。');
+      ui.showBootstrapError('現在のページで bootstrap 初期化を完了できませんでした。ページを更新するか、開発サーバーを再起動してから再試行してください。');
     } else {
       let currentRevision = bootstrap.revision;
       let currentBundle: AdminSettingsExportBundle | null = null;
@@ -130,13 +130,13 @@ if (!root) {
 
       const showImportActionLoading = (action: ImportAction) => {
         const isDryRun = action === 'dry-run';
-        ui.setStatus('loading', isDryRun ? '正在执行 dry-run' : '正在写入');
+        ui.setStatus('loading', isDryRun ? 'dry-run を実行しています' : '正在書き込み');
         ui.showPreviewEmpty({
           state: 'loading',
-          title: isDryRun ? '正在执行 dry-run 校验' : '正在写入 settings',
+          title: isDryRun ? 'dry-run を実行しています 検証' : '正在書き込み settings',
           body: isDryRun
-            ? '正在比对当前 settings 与导入快照，完成后会在这里生成差异摘要。'
-            : '正在沿用现有事务链路写入 settings，完成后会在这里回填写入结果。'
+            ? '現在の settings とインポートスナップショットを比較しています。完了後、ここに差分概要を表示します。'
+            : '既存のトランザクション経路で settings を書き込んでいます。完了後、ここに書き込み結果を表示します。'
         });
       };
 
@@ -152,11 +152,11 @@ if (!root) {
           hasChanges
             ? {
                 state: 'diff',
-                note: '确认写入前会再次校验 revision，避免覆盖外部修改。'
+                note: '書き込み確定前に revision を再検証し、外部変更の上書きを防ぎます。'
               }
             : {
                 state: 'clean',
-                body: '当前导入快照与本地 settings 一致，不需要写盘。'
+                body: '現在のインポートスナップショットはローカル settings と一致しています。書き込みは不要です。'
               }
         );
         ui.setStatus(hasChanges ? 'ok' : 'ready', 'dry-run 完成');
@@ -168,10 +168,10 @@ if (!root) {
         hasCompletedApply = true;
         ui.renderPreview(results, {
           state: 'applied',
-          body: '✅ 写入成功',
-          note: '继续导入其他快照前，请重新执行 dry-run。'
+          body: '✅ 書き込み成功',
+          note: '继续インポート其他快照前，请再执行 dry-run。'
         });
-        ui.setStatus('ok', '写入完成');
+        ui.setStatus('ok', '書き込み完成');
       };
 
       const handleSelectedFile = async (file: File | null) => {
@@ -182,15 +182,15 @@ if (!root) {
         if (!file) {
           ui.setSelectedFileLabel(null);
           ui.resetPreview();
-          ui.setStatus('idle', '等待操作', { announce: false });
+          ui.setStatus('idle', '操作待ち', { announce: false });
           return;
         }
 
         ui.setSelectedFileLabel(file.name);
         ui.showPreviewEmpty({
           state: 'loading',
-          title: '正在解析导入快照',
-          body: `正在读取 ${file.name} 并校验 manifest 结构。`
+          title: 'インポートスナップショットを解析しています',
+          body: `正在読み取り ${file.name} を読み取り、manifest 構造を検証しています。`
         });
         ui.setStatus('loading', '正在解析', { announce: false });
 
@@ -202,11 +202,11 @@ if (!root) {
           if (!parsed.ok) {
             showImportFailure({
               status: 'error',
-              statusText: '解析失败',
+              statusText: '解析失敗しました',
               errors: parsed.errors,
-              errorTitle: '导入文件不符合 settings 导出协议',
-              previewTitle: '导入文件解析失败',
-              previewBody: '当前文件不符合 settings 导出协议。请确认 schemaVersion、includedScopes 与 JSON 结构后重试。'
+              errorTitle: 'インポートファイルが settings エクスポート形式に一致しません',
+              previewTitle: 'インポートファイルの解析に失敗しました',
+              previewBody: '現在のファイルが settings エクスポート形式に一致しません。schemaVersion、includedScopes、JSON 構造を確認してから再試行してください。'
             });
             return;
           }
@@ -223,9 +223,9 @@ if (!root) {
           showImportFailure({
             status: 'error',
             statusText: 'JSON 无效',
-            errors: ['所选文件不是合法 JSON，或编码内容已损坏'],
-            previewTitle: '导入文件不是合法 JSON',
-            previewBody: '所选文件不是合法 JSON，或编码内容已损坏。请重新选择导出快照。'
+            errors: ['選択したファイルは有効な JSON ではないか、エンコード内容が破損しています'],
+            previewTitle: 'インポートファイルが有効な JSON ではありません',
+            previewBody: '選択したファイルは有効な JSON ではないか、エンコード内容が破損しています。请再選択エクスポート快照。'
           });
         } finally {
           syncActionState();
@@ -273,18 +273,18 @@ if (!root) {
             const payloadErrors = getPayloadErrors(payload);
             showImportFailure({
               status: isRevisionConflict ? 'warn' : 'error',
-              statusText: isDryRun ? 'dry-run 未通过' : '写入失败',
+              statusText: isDryRun ? 'dry-run 未通过' : '書き込みに失敗しました',
               errors: payloadErrors.length > 0
                 ? payloadErrors
-                : [isDryRun ? 'dry-run 校验失败，请检查导入文件与当前配置状态' : '写入 settings 失败，请检查响应与控制台日志'],
-              errorTitle: isRevisionConflict ? '检测到外部更新' : '导入未完成',
+                : [isDryRun ? 'dry-run の検証に失敗しました。インポートファイルと現在の設定状態を確認してください' : 'settings の書き込みに失敗しました。レスポンスとコンソールログを確認してください'],
+              errorTitle: isRevisionConflict ? '外部更新を検出しました' : 'インポート未完成',
               previewState: isRevisionConflict ? 'warn' : 'error',
-              previewTitle: isRevisionConflict ? '检测到外部更新' : isDryRun ? 'dry-run 未通过' : '写入失败',
+              previewTitle: isRevisionConflict ? '外部更新を検出しました' : isDryRun ? 'dry-run 未通过' : '書き込みに失敗しました',
               previewBody: isRevisionConflict
-                ? '本次导入已停止，避免静默覆盖外部修改。请重新执行 dry-run，并在最新 revision 上确认结果。'
+                ? '本次インポート已停止，避免静默覆盖外部修改。请再执行 dry-run，并在最新 revision 上确认结果。'
                 : isDryRun
-                  ? '当前未生成可提交的变更预览，请修正错误清单后再次执行 dry-run。'
-                  : '本次写入未完成，请先处理错误清单，再重新提交配置快照。'
+                  ? '現在未生成可提交的変更预览，请修正错误清单后再次执行 dry-run。'
+                  : '今回の書き込みは完了していません。先にエラー一覧を処理してから、設定スナップショットを再送信してください。'
             });
             return;
           }
@@ -298,12 +298,12 @@ if (!root) {
         } catch {
           showImportFailure({
             status: 'error',
-            statusText: isDryRun ? 'dry-run 请求失败' : '写入请求失败',
-            errors: [isDryRun ? 'dry-run 请求失败，请稍后重试' : '写入请求失败，请稍后重试'],
-            previewTitle: isDryRun ? 'dry-run 请求失败' : '写入请求失败',
+            statusText: isDryRun ? 'dry-run リクエストに失敗しました' : '書き込みリクエストに失敗しました',
+            errors: [isDryRun ? 'dry-run リクエストに失敗しました，しばらくしてから再試行してください' : '書き込みリクエストに失敗しました，しばらくしてから再試行してください'],
+            previewTitle: isDryRun ? 'dry-run リクエストに失敗しました' : '書き込みリクエストに失敗しました',
             previewBody: isDryRun
-              ? '当前未拿到服务端响应，请检查开发服务器状态后重新执行 dry-run。'
-              : '写入结果尚未确认，请检查开发服务器状态后重新提交。'
+              ? 'サーバー応答を取得できませんでした。開発サーバーの状態を確認してから、再度 dry-run を実行してください。'
+              : '書き込み結果を確認できませんでした。開発サーバーの状態を確認してから再送信してください。'
           });
         } finally {
           activeAction = null;
@@ -316,7 +316,7 @@ if (!root) {
         busy = true;
         syncActionState();
         ui.clearErrors();
-        ui.setStatus('loading', '正在导出快照');
+        ui.setStatus('loading', 'スナップショットを書き出しています');
 
         try {
           const response = await fetch(bootstrap.exportEndpoint, {
@@ -329,13 +329,13 @@ if (!root) {
 
           if (!response.ok) {
             const payload = await parseResponseBody(response);
-            ui.setStatus(response.status === 409 ? 'warn' : 'error', '导出失败');
+            ui.setStatus(response.status === 409 ? 'warn' : 'error', 'エクスポート失敗しました');
             ui.setErrors(
               getPayloadErrors(payload).length > 0
                 ? getPayloadErrors(payload)
-                : ['当前 settings 状态不可导出，请先修复本地配置后重试'],
+                : ['現在の settings 状態ではエクスポートできません。先にローカル設定を修正してから再試行してください'],
               {
-                title: response.status === 409 ? 'settings 当前不可导出' : '导出失败'
+                title: response.status === 409 ? 'settings 現在不可エクスポート' : 'エクスポート失敗しました'
               }
             );
             return;
@@ -350,10 +350,10 @@ if (!root) {
           anchor.click();
           anchor.remove();
           URL.revokeObjectURL(downloadUrl);
-          ui.setStatus('ok', '快照已导出');
+          ui.setStatus('ok', '快照已エクスポート');
         } catch {
-          ui.setStatus('error', '导出请求失败');
-          ui.setErrors(['导出请求失败，请检查开发服务器状态后重试']);
+          ui.setStatus('error', 'エクスポートリクエストに失敗しました');
+          ui.setErrors(['エクスポートリクエストに失敗しました。開発サーバーの状態を確認してから再試行してください']);
         } finally {
           busy = false;
           syncActionState();

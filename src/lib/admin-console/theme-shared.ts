@@ -33,7 +33,7 @@ export const ADMIN_HERO_PRESET_SET: ReadonlySet<HeroPresetId> = new Set(ADMIN_HE
 export const ADMIN_HERO_IMAGE_ALT_DEFAULT = 'Whono theme preview';
 export const ADMIN_HERO_IMAGE_ALT_MAX_LENGTH = 120;
 
-export const ADMIN_ARTICLE_META_DATE_LABEL_DEFAULT = '发布于：';
+export const ADMIN_ARTICLE_META_DATE_LABEL_DEFAULT = '公開日：';
 export const ADMIN_ARTICLE_META_DATE_LABEL_MAX_LENGTH = 20;
 
 export const ADMIN_SIDEBAR_DIVIDER_VARIANTS = [
@@ -136,7 +136,7 @@ export const ADMIN_NAV_ORNAMENT_DEFAULT = '·';
 export const ADMIN_NAV_ORNAMENT_MAX_LENGTH = 4;
 export const ADMIN_FOOTER_START_YEAR_MIN = 1900;
 export const ADMIN_FOOTER_COPYRIGHT_MAX_LENGTH = 120;
-export const ADMIN_OVERVIEW_HIDDEN_MESSAGE_DEFAULT = '作者暂未公开此页面。';
+export const ADMIN_OVERVIEW_HIDDEN_MESSAGE_DEFAULT = '作者暂未公开此ページ。';
 export const ADMIN_OVERVIEW_HIDDEN_MESSAGE_MAX_LENGTH = 120;
 
 export const ADMIN_LOCALE_RE = /^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$/;
@@ -689,7 +689,7 @@ export const validateAdminThemeSettings = (
     issues.push(createValidationIssue(path, message));
   };
 
-  if (!settings.site.title) pushIssue('site.title', '站点标题不能为空');
+  if (!settings.site.title) pushIssue('site.title', 'サイトタイトル不能为空');
   if (!settings.site.description) pushIssue('site.description', '站点描述不能为空');
   if (!settings.site.defaultLocale) {
     pushIssue('site.defaultLocale', '默认语言不能为空');
@@ -698,16 +698,16 @@ export const validateAdminThemeSettings = (
   }
 
   if (!Number.isInteger(settings.site.footer?.startYear)) {
-    pushIssue('site.footer.startYear', '页脚起始年份必须是整数');
+    pushIssue('site.footer.startYear', 'フッターの開始年は整数である必要があります');
   } else if (
     settings.site.footer.startYear < ADMIN_FOOTER_START_YEAR_MIN ||
     settings.site.footer.startYear > footerStartYearMax
   ) {
-    pushIssue('site.footer.startYear', '页脚起始年份超出允许范围');
+    pushIssue('site.footer.startYear', 'フッターの開始年が許可範囲外です');
   }
 
   if (typeof settings.site.footer?.showCurrentYear !== 'boolean') {
-    pushIssue('site.footer.showCurrentYear', '是否显示当前年必须是布尔值');
+    pushIssue('site.footer.showCurrentYear', '是否現在年を表示は真偽値である必要があります');
   }
 
   if (!settings.site.footer?.copyright) {
@@ -716,26 +716,26 @@ export const validateAdminThemeSettings = (
     settings.site.footer.copyright.includes('\n') ||
     settings.site.footer.copyright.includes('\r')
   ) {
-    pushIssue('site.footer.copyright', '页脚版权行只允许单行文本');
+    pushIssue('site.footer.copyright', 'フッターのコピーライト行は1行テキストのみ使えます');
   } else if (settings.site.footer.copyright.length > ADMIN_FOOTER_COPYRIGHT_MAX_LENGTH) {
     pushIssue('site.footer.copyright', `页脚版权行不能超过 ${ADMIN_FOOTER_COPYRIGHT_MAX_LENGTH} 个字符`);
   }
 
   if (typeof settings.site.adminOverview?.publicVisible !== 'boolean') {
-    pushIssue('site.adminOverview.publicVisible', 'Admin Overview 公开展示开关必须是布尔值');
+    pushIssue('site.adminOverview.publicVisible', 'Admin Overview 公开展示开关は真偽値である必要があります');
   }
 
   if (!settings.site.adminOverview?.hiddenMessage) {
-    pushIssue('site.adminOverview.hiddenMessage', 'Admin Overview 关闭态文案不能为空');
+    pushIssue('site.adminOverview.hiddenMessage', 'Admin Overview の非公開時メッセージは空にできません');
   } else if (
     settings.site.adminOverview.hiddenMessage.includes('\n') ||
     settings.site.adminOverview.hiddenMessage.includes('\r')
   ) {
-    pushIssue('site.adminOverview.hiddenMessage', 'Admin Overview 关闭态文案只允许单行文本');
+    pushIssue('site.adminOverview.hiddenMessage', 'Admin Overview の非公開時メッセージは1行テキストのみ使えます');
   } else if (settings.site.adminOverview.hiddenMessage.length > ADMIN_OVERVIEW_HIDDEN_MESSAGE_MAX_LENGTH) {
     pushIssue(
       'site.adminOverview.hiddenMessage',
-      `Admin Overview 关闭态文案不能超过 ${ADMIN_OVERVIEW_HIDDEN_MESSAGE_MAX_LENGTH} 个字符`
+      `Admin Overview の非公開時メッセージは ${ADMIN_OVERVIEW_HIDDEN_MESSAGE_MAX_LENGTH} 文字以内にしてください`
     );
   }
 
@@ -743,19 +743,19 @@ export const validateAdminThemeSettings = (
     settings.site.socialLinks?.github &&
     !isAdminAllowedHttpsUrl(settings.site.socialLinks.github, ADMIN_GITHUB_HOSTS)
   ) {
-    pushIssue('site.socialLinks.github', 'GitHub 链接只允许 https://github.com/... ');
+    pushIssue('site.socialLinks.github', 'GitHub リンクは https://github.com/... のみ使えます');
   }
   if (
     settings.site.socialLinks?.x &&
     !isAdminAllowedHttpsUrl(settings.site.socialLinks.x, ADMIN_X_HOSTS)
   ) {
-    pushIssue('site.socialLinks.x', 'X / Twitter 链接只允许 https://x.com/... 或 https://twitter.com/... ');
+    pushIssue('site.socialLinks.x', 'X / Twitter リンクは https://x.com/... または https://twitter.com/... のみ使えます');
   }
   if (
     settings.site.socialLinks?.email &&
     !ADMIN_EMAIL_RE.test(normalizeEmail(settings.site.socialLinks.email))
   ) {
-    pushIssue('site.socialLinks.email', 'Email 必须是合法邮箱地址');
+    pushIssue('site.socialLinks.email', 'Email は有効なメールアドレスである必要があります');
   }
 
   const presetOrder = settings.site.socialLinks.presetOrder;
@@ -790,57 +790,57 @@ export const validateAdminThemeSettings = (
     if (orderIssue === 'range') {
       pushIssue(
         `site.socialLinks.presetOrder.${id}`,
-        `${rowLabel} 的位置排序必须为 ${ADMIN_SOCIAL_ORDER_MIN}-${ADMIN_SOCIAL_ORDER_MAX} 的整数`
+        `${rowLabel} の並び順は ${ADMIN_SOCIAL_ORDER_MIN}-${ADMIN_SOCIAL_ORDER_MAX} の整数である必要があります`
       );
       return;
     }
     if (orderIssue === 'duplicate') {
-      pushIssue(`site.socialLinks.presetOrder.${id}`, `社交链接位置排序不能重复：${presetOrder[id]}`);
+      pushIssue(`site.socialLinks.presetOrder.${id}`, `SNSリンクの並び順は重複できません：${presetOrder[id]}`);
     }
   });
 
   if (customLinks.length > ADMIN_SOCIAL_CUSTOM_LIMIT) {
-    pushIssue('site.socialLinks.custom', `自定义链接最多只能添加 ${ADMIN_SOCIAL_CUSTOM_LIMIT} 条`);
+    pushIssue('site.socialLinks.custom', `カスタムリンク最多只能添加 ${ADMIN_SOCIAL_CUSTOM_LIMIT} 条`);
   }
 
   const seenCustomIds = new Set<string>();
   customLinks.forEach((item, index) => {
     const basePath = `site.socialLinks.custom[${index}]`;
     if (!item.id) {
-      pushIssue(`${basePath}.id`, `自定义链接 #${index + 1} 的 ID 不能为空`);
+      pushIssue(`${basePath}.id`, `カスタムリンク #${index + 1} 的 ID 不能为空`);
     } else {
       if (item.id.includes('\n') || item.id.includes('\r')) {
-        pushIssue(`${basePath}.id`, `自定义链接 #${index + 1} 的 ID 只允许单行文本`);
+        pushIssue(`${basePath}.id`, `カスタムリンク #${index + 1} の ID は1行テキストのみ使えます`);
       }
       if (seenCustomIds.has(item.id)) {
-        pushIssue(`${basePath}.id`, `自定义链接 ID 重复：${item.id}`);
+        pushIssue(`${basePath}.id`, `カスタムリンク ID 重复：${item.id}`);
       }
       seenCustomIds.add(item.id);
     }
 
     if (!item.label) {
-      pushIssue(`${basePath}.label`, `自定义链接 #${index + 1} 的显示名称不能为空`);
+      pushIssue(`${basePath}.label`, `カスタムリンク #${index + 1} 的表示名称不能为空`);
     } else if (item.label.includes('\n') || item.label.includes('\r')) {
-      pushIssue(`${basePath}.label`, `自定义链接 #${index + 1} 的显示名称只允许单行文本`);
+      pushIssue(`${basePath}.label`, `カスタムリンク #${index + 1} の表示名は1行テキストのみ使えます`);
     }
 
     if (!item.href || !isAdminAllowedHttpsUrl(item.href)) {
-      pushIssue(`${basePath}.href`, `自定义链接 #${index + 1} 的链接必须是合法 https:// 地址`);
+      pushIssue(`${basePath}.href`, `カスタムリンク #${index + 1} のリンクは有効な https:// アドレスである必要があります`);
     }
     if (!isAdminSocialIconKey(item.iconKey)) {
-      pushIssue(`${basePath}.iconKey`, `自定义链接 #${index + 1} 的图标必须从白名单中选择`);
+      pushIssue(`${basePath}.iconKey`, `カスタムリンク #${index + 1} のアイコンは許可リストから選択する必要があります`);
     }
     const orderIssue = customOrderIssues.get(index);
     if (orderIssue === 'range') {
       pushIssue(
         `${basePath}.order`,
-        `自定义链接 #${index + 1} 的位置排序必须为 ${ADMIN_SOCIAL_ORDER_MIN}-${ADMIN_SOCIAL_ORDER_MAX} 的整数`
+        `カスタムリンク #${index + 1} の並び順は ${ADMIN_SOCIAL_ORDER_MIN}-${ADMIN_SOCIAL_ORDER_MAX} の整数である必要があります`
       );
     } else if (orderIssue === 'duplicate') {
-      pushIssue(`${basePath}.order`, `社交链接位置排序不能重复：${item.order}`);
+      pushIssue(`${basePath}.order`, `SNSリンクの並び順は重複できません：${item.order}`);
     }
     if (typeof item.visible !== 'boolean') {
-      pushIssue(`${basePath}.visible`, `自定义链接 #${index + 1} 的 visible 必须是布尔值`);
+      pushIssue(`${basePath}.visible`, `カスタムリンク #${index + 1} 的 visible は真偽値である必要があります`);
     }
   });
 
@@ -854,7 +854,7 @@ export const validateAdminThemeSettings = (
   }
 
   if (typeof settings.home.showIntroLead !== 'boolean') {
-    pushIssue('home.showIntroLead', '首页导语主文案展示开关必须是布尔值');
+    pushIssue('home.showIntroLead', '首页导语主文案展示开关は真偽値である必要があります');
   }
 
   if (!settings.home.introMore) {
@@ -864,25 +864,25 @@ export const validateAdminThemeSettings = (
   }
 
   if (typeof settings.home.showIntroMore !== 'boolean') {
-    pushIssue('home.showIntroMore', '首页导语补充文案展示开关必须是布尔值');
+    pushIssue('home.showIntroMore', '首页导语补充文案展示开关は真偽値である必要があります');
   }
 
   if (!Array.isArray(settings.home.introMoreLinks)) {
-    pushIssue('home.introMoreLinks', '首页导语补充链接必须是数组');
+    pushIssue('home.introMoreLinks', 'トップページ導入文の補足リンクは配列である必要があります');
   } else if (
     settings.home.introMoreLinks.length < 1 ||
     settings.home.introMoreLinks.length > ADMIN_HOME_INTRO_LINK_LIMIT
   ) {
-    pushIssue('home.introMoreLinks', `首页导语补充链接必须选择 1-${ADMIN_HOME_INTRO_LINK_LIMIT} 个入口`);
+    pushIssue('home.introMoreLinks', `トップページ導入文の補足リンクは 1-${ADMIN_HOME_INTRO_LINK_LIMIT} 件選択する必要があります`);
   } else {
     const seenHomeIntroLinks = new Set<HomeIntroLinkKey>();
     settings.home.introMoreLinks.forEach((linkKey, index) => {
       if (!isAdminHomeIntroLinkKey(linkKey)) {
-        pushIssue(`home.introMoreLinks[${index}]`, `首页导语补充链接 #${index + 1} 非法：${String(linkKey)}`);
+        pushIssue(`home.introMoreLinks[${index}]`, `トップページ導入文の補足リンク #${index + 1} が不正です：${String(linkKey)}`);
         return;
       }
       if (seenHomeIntroLinks.has(linkKey)) {
-        pushIssue(`home.introMoreLinks[${index}]`, `首页导语补充链接不能重复：${linkKey}`);
+        pushIssue(`home.introMoreLinks[${index}]`, `トップページ導入文の補足リンクは重複できません：${linkKey}`);
         return;
       }
       seenHomeIntroLinks.add(linkKey);
@@ -890,7 +890,7 @@ export const validateAdminThemeSettings = (
   }
 
   if (!ADMIN_HERO_PRESET_SET.has(settings.home.heroPresetId)) {
-    pushIssue('home.heroPresetId', 'Hero 展示模式只允许 default/none');
+    pushIssue('home.heroPresetId', 'Hero 表示モードは default/none のみ使えます');
   }
 
   if (
@@ -899,42 +899,42 @@ export const validateAdminThemeSettings = (
   ) {
     pushIssue(
       'home.heroImageSrc',
-      'Hero 图片地址只允许 src/assets/**、public/**（或 / 开头路径）以及 https:// 图片地址'
+      'Hero 画像アドレスは src/assets/**、public/**（または / で始まるパス）、https:// 画像アドレスのみ使えます'
     );
   } else if (settings.home.heroImageSrc) {
     const localFilePath = getAdminHeroImageLocalFilePath(settings.home.heroImageSrc);
     if (localFilePath && options.localFileExists && !options.localFileExists(localFilePath)) {
-      pushIssue('home.heroImageSrc', `Hero 图片指向的本地文件不存在：${localFilePath}`);
+      pushIssue('home.heroImageSrc', `Hero 画像が指すローカルファイルが存在しません：${localFilePath}`);
     }
   }
 
   if (!settings.home.heroImageAlt) {
-    pushIssue('home.heroImageAlt', 'Hero 图片说明不能为空');
+    pushIssue('home.heroImageAlt', 'Hero 画像の説明不能为空');
   } else if (
     settings.home.heroImageAlt.includes('\n') ||
     settings.home.heroImageAlt.includes('\r')
   ) {
-    pushIssue('home.heroImageAlt', 'Hero 图片说明只允许单行文本');
+    pushIssue('home.heroImageAlt', 'Hero 画像の説明は1行テキストのみ使えます');
   } else if (settings.home.heroImageAlt.length > ADMIN_HERO_IMAGE_ALT_MAX_LENGTH) {
-    pushIssue('home.heroImageAlt', `Hero 图片说明不能超过 ${ADMIN_HERO_IMAGE_ALT_MAX_LENGTH} 个字符`);
+    pushIssue('home.heroImageAlt', `Hero 画像の説明不能超过 ${ADMIN_HERO_IMAGE_ALT_MAX_LENGTH} 个字符`);
   }
 
   const pageTitleMap: Array<[string | null, string, string]> = [
-    [settings.page.essay?.title, '/essay/ 页面主标题', 'page.essay.title'],
-    [settings.page.archive?.title, '/archive/ 页面主标题', 'page.archive.title'],
-    [settings.page.bits?.title, '/bits/ 页面主标题', 'page.bits.title'],
-    [settings.page.memo?.title, '/memo/ 页面主标题', 'page.memo.title'],
-    [settings.page.about?.title, '/about/ 页面主标题', 'page.about.title']
+    [settings.page.essay?.title, '/essay/ ページの主見出し', 'page.essay.title'],
+    [settings.page.archive?.title, '/archive/ ページの主見出し', 'page.archive.title'],
+    [settings.page.bits?.title, '/bits/ ページの主見出し', 'page.bits.title'],
+    [settings.page.memo?.title, '/memo/ ページの主見出し', 'page.memo.title'],
+    [settings.page.about?.title, '/about/ ページの主見出し', 'page.about.title']
   ];
 
   pageTitleMap.forEach(([title, label, path]) => {
     if (title == null) return;
     if (typeof title !== 'string') {
-      pushIssue(path, `${label} 必须是字符串或留空`);
+      pushIssue(path, `${label} は文字列である必要があります或留空`);
       return;
     }
     if (title.includes('\n') || title.includes('\r')) {
-      pushIssue(path, `${label} 只允许单行文本`);
+      pushIssue(path, `${label} は1行テキストのみ使えます`);
     }
     if (title.length > ADMIN_PAGE_TITLE_MAX_LENGTH) {
       pushIssue(path, `${label} 不能超过 ${ADMIN_PAGE_TITLE_MAX_LENGTH} 个字符`);
@@ -942,21 +942,21 @@ export const validateAdminThemeSettings = (
   });
 
   const pageSubtitleMap: Array<[string | null, string, string]> = [
-    [settings.page.essay?.subtitle, '/essay/ 页面副标题', 'page.essay.subtitle'],
-    [settings.page.archive?.subtitle, '/archive/ 页面副标题', 'page.archive.subtitle'],
-    [settings.page.bits?.subtitle, '/bits/ 页面副标题', 'page.bits.subtitle'],
-    [settings.page.memo?.subtitle, '/memo/ 页面副标题', 'page.memo.subtitle'],
-    [settings.page.about?.subtitle, '/about/ 页面副标题', 'page.about.subtitle']
+    [settings.page.essay?.subtitle, '/essay/ ページの副見出し', 'page.essay.subtitle'],
+    [settings.page.archive?.subtitle, '/archive/ ページの副見出し', 'page.archive.subtitle'],
+    [settings.page.bits?.subtitle, '/bits/ ページの副見出し', 'page.bits.subtitle'],
+    [settings.page.memo?.subtitle, '/memo/ ページの副見出し', 'page.memo.subtitle'],
+    [settings.page.about?.subtitle, '/about/ ページの副見出し', 'page.about.subtitle']
   ];
 
   pageSubtitleMap.forEach(([subtitle, label, path]) => {
     if (subtitle == null) return;
     if (typeof subtitle !== 'string') {
-      pushIssue(path, `${label} 必须是字符串或留空`);
+      pushIssue(path, `${label} は文字列である必要があります或留空`);
       return;
     }
     if (subtitle.includes('\n') || subtitle.includes('\r')) {
-      pushIssue(path, `${label} 只允许单行文本`);
+      pushIssue(path, `${label} は1行テキストのみ使えます`);
     }
     if (subtitle.length > ADMIN_PAGE_SUBTITLE_MAX_LENGTH) {
       pushIssue(path, `${label} 不能超过 ${ADMIN_PAGE_SUBTITLE_MAX_LENGTH} 个字符`);
@@ -970,22 +970,22 @@ export const validateAdminThemeSettings = (
     if (normalizeAdminBitsAvatarPath(settings.page.bits.defaultAuthor.avatar) === undefined) {
       pushIssue(
         'page.bits.defaultAuthor.avatar',
-        'Bits 默认头像只允许相对图片路径（例如 author/avatar.webp），不要带 public/、不要以 / 开头，也不要包含 URL、..、?、#'
+        'Bits のデフォルトアバターは相対画像パスのみ使えます（例: author/avatar.webp）。public/、先頭の /、URL、..、?、# は含めないでください'
       );
     }
   }
 
   if (typeof settings.ui?.articleMeta?.showDate !== 'boolean') {
-    pushIssue('ui.articleMeta.showDate', '文章元信息里的“显示发布日期”必须是布尔值');
+    pushIssue('ui.articleMeta.showDate', '文章元信息里的“公開日を表示”は真偽値である必要があります');
   }
 
   if (typeof settings.ui?.articleMeta?.dateLabel !== 'string') {
-    pushIssue('ui.articleMeta.dateLabel', '文章元信息里的“日期前缀”必须是字符串');
+    pushIssue('ui.articleMeta.dateLabel', '文章元信息里的“日期前缀”は文字列である必要があります');
   } else if (
     settings.ui.articleMeta.dateLabel.includes('\n') ||
     settings.ui.articleMeta.dateLabel.includes('\r')
   ) {
-    pushIssue('ui.articleMeta.dateLabel', '文章元信息里的“日期前缀”只允许单行文本');
+    pushIssue('ui.articleMeta.dateLabel', '文章元信息里的“日期前缀”は1行テキストのみ使えます');
   } else if (settings.ui.articleMeta.dateLabel.length > ADMIN_ARTICLE_META_DATE_LABEL_MAX_LENGTH) {
     pushIssue(
       'ui.articleMeta.dateLabel',
@@ -994,36 +994,36 @@ export const validateAdminThemeSettings = (
   }
 
   if (typeof settings.ui?.articleMeta?.showTags !== 'boolean') {
-    pushIssue('ui.articleMeta.showTags', '文章元信息里的“显示标签”必须是布尔值');
+    pushIssue('ui.articleMeta.showTags', '文章元信息里的“タグを表示”は真偽値である必要があります');
   }
 
   if (typeof settings.ui?.articleMeta?.showWordCount !== 'boolean') {
-    pushIssue('ui.articleMeta.showWordCount', '文章元信息里的“显示字数”必须是布尔值');
+    pushIssue('ui.articleMeta.showWordCount', '文章元信息里的“文字数を表示”は真偽値である必要があります');
   }
 
   if (typeof settings.ui?.articleMeta?.showReadingTime !== 'boolean') {
-    pushIssue('ui.articleMeta.showReadingTime', '文章元信息里的“显示阅读时长”必须是布尔值');
+    pushIssue('ui.articleMeta.showReadingTime', '文章元信息里的“読了時間を表示”は真偽値である必要があります');
   }
 
   if (typeof settings.ui?.sidebarActions?.showRssLink !== 'boolean') {
-    pushIssue('ui.sidebarActions.showRssLink', '侧栏图标里的“显示 RSS 入口”必须是布尔值');
+    pushIssue('ui.sidebarActions.showRssLink', '侧栏图标里的“RSS入口を表示”は真偽値である必要があります');
   }
 
   if (typeof settings.ui?.sidebarActions?.showThemeToggle !== 'boolean') {
-    pushIssue('ui.sidebarActions.showThemeToggle', '侧栏图标里的“显示主题切换入口”必须是布尔值');
+    pushIssue('ui.sidebarActions.showThemeToggle', '侧栏图标里的“テーマ切替入口を表示”は真偽値である必要があります');
   }
 
   if (typeof settings.ui?.sidebarActions?.showAdminEntry !== 'boolean') {
-    pushIssue('ui.sidebarActions.showAdminEntry', '侧栏图标里的“显示 /admin/ 入口”必须是布尔值');
+    pushIssue('ui.sidebarActions.showAdminEntry', '侧栏图标里的“/admin/ 入口を表示”は真偽値である必要があります');
   }
 
   if (!isAdminSidebarDividerVariant(settings.ui?.layout?.sidebarDivider ?? '')) {
-    pushIssue('ui.layout.sidebarDivider', '侧栏分隔线只允许 默认 / 弱化 / 隐藏');
+    pushIssue('ui.layout.sidebarDivider', 'サイドバーの区切り線は「標準 / 弱め / 非表示」のみ使えます');
   }
 
   const nav = Array.isArray(settings.shell.nav) ? settings.shell.nav : [];
   if (nav.length !== ADMIN_NAV_IDS.length) {
-    pushIssue('shell.nav', 'Sidebar 导航项数量必须与既有导航一致');
+    pushIssue('shell.nav', 'Sidebar のナビ項目数は既存ナビと一致している必要があります');
   }
 
   const seenIds = new Set<SidebarNavId>();
@@ -1047,22 +1047,22 @@ export const validateAdminThemeSettings = (
     const navId = ADMIN_NAV_IDS.includes(item.id) ? item.id : null;
     const basePath = navId ? `shell.nav.${navId}` : `shell.nav[${index}]`;
     if (!navId) {
-      pushIssue(`${basePath}.id`, `存在非法导航项 ID：${item.id}`);
+      pushIssue(`${basePath}.id`, `存在非法ナビ項目 ID：${item.id}`);
     } else if (seenIds.has(navId)) {
-      pushIssue(`${basePath}.id`, `导航项 ID 重复：${navId}`);
+      pushIssue(`${basePath}.id`, `ナビ項目 ID 重复：${navId}`);
     }
     if (navId) seenIds.add(navId);
 
     if (!item.label) {
-      pushIssue(`${basePath}.label`, `导航项 ${item.id} 的显示名称不能为空`);
+      pushIssue(`${basePath}.label`, `ナビ項目 ${item.id} 的表示名称不能为空`);
     }
     if (item.ornament !== null) {
       if (typeof item.ornament !== 'string') {
-        pushIssue(`${basePath}.ornament`, `导航项 ${item.id} 的点缀必须是字符串或留空`);
+        pushIssue(`${basePath}.ornament`, `ナビ項目 ${item.id} の装飾は文字列である必要があります或留空`);
       } else if (item.ornament.includes('\n') || item.ornament.includes('\r')) {
-        pushIssue(`${basePath}.ornament`, `导航项 ${item.id} 的点缀只允许单行文本`);
+        pushIssue(`${basePath}.ornament`, `ナビ項目 ${item.id} の装飾は1行テキストのみ使えます`);
       } else if (item.ornament.length > ADMIN_NAV_ORNAMENT_MAX_LENGTH) {
-        pushIssue(`${basePath}.ornament`, `导航项 ${item.id} 的点缀不能超过 ${ADMIN_NAV_ORNAMENT_MAX_LENGTH} 个字符`);
+        pushIssue(`${basePath}.ornament`, `ナビ項目 ${item.id} の装飾不能超过 ${ADMIN_NAV_ORNAMENT_MAX_LENGTH} 个字符`);
       }
     }
     if (
@@ -1070,12 +1070,12 @@ export const validateAdminThemeSettings = (
       item.order < ADMIN_NAV_ORDER_MIN ||
       item.order > ADMIN_NAV_ORDER_MAX
     ) {
-      pushIssue(`${basePath}.order`, `导航项 ${item.id} 的位置排序必须为 ${ADMIN_NAV_ORDER_MIN}-${ADMIN_NAV_ORDER_MAX} 的整数`);
+      pushIssue(`${basePath}.order`, `ナビ項目 ${item.id} の並び順は ${ADMIN_NAV_ORDER_MIN}-${ADMIN_NAV_ORDER_MAX} の整数である必要があります`);
     } else if (navId && navOrderIssues.get(navId) === 'duplicate') {
       pushIssue(`${basePath}.order`, `位置排序不能重复：${item.order}`);
     }
     if (typeof item.visible !== 'boolean') {
-      pushIssue(`${basePath}.visible`, `导航项 ${item.id} 的 visible 必须是布尔值`);
+      pushIssue(`${basePath}.visible`, `ナビ項目 ${item.id} 的 visible は真偽値である必要があります`);
     }
   });
 
@@ -1359,7 +1359,7 @@ export const createAdminThemeSettingsCanonicalMismatchIssues = (
   const {
     mode = 'exact',
     pathPrefix = '',
-    messagePrefix = '配置值会在归一化后发生变化，请先修复原始输入'
+    messagePrefix = '設定値は正規化後に変化します。先に元の入力を修正してください'
   } = options;
   const mismatchPaths = getAdminThemeSettingsMismatchPaths(actual, expected, mode);
   return mismatchPaths.map((path) => {

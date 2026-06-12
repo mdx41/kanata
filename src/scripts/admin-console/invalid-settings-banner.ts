@@ -7,8 +7,8 @@ const getDiagnosticHeadline = (diagnostic: ThemeSettingsReadDiagnostic): string 
   const fileName = diagnostic.path.split('/').pop() || diagnostic.path;
   if (diagnostic.code === 'invalid-json') return `${fileName} 格式错误`;
   if (diagnostic.code === 'invalid-root') return `${fileName} 结构错误`;
-  if (diagnostic.code === 'schema-mismatch') return `${fileName} 配置不一致`;
-  return `${fileName} 读取失败`;
+  if (diagnostic.code === 'schema-mismatch') return `${fileName} 設定が一致していません`;
+  return `${fileName} 読み取り失敗しました`;
 };
 
 const createDiagnosticMeta = (label: string, value: string, options: { mono?: boolean } = {}): HTMLElement => {
@@ -57,7 +57,7 @@ const createDiagnosticListItem = (diagnostic: ThemeSettingsReadDiagnostic): HTML
   title.textContent = getDiagnosticHeadline(diagnostic);
   item.appendChild(title);
 
-  item.appendChild(createDiagnosticMeta('文件', diagnostic.path, { mono: true }));
+  item.appendChild(createDiagnosticMeta('ファイル', diagnostic.path, { mono: true }));
 
   if (typeof diagnostic.line === 'number' && typeof diagnostic.column === 'number') {
     item.appendChild(createDiagnosticMeta('位置', `第 ${diagnostic.line} 行，第 ${diagnostic.column} 列`));

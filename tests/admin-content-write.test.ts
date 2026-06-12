@@ -131,7 +131,7 @@ describe('admin content write api', () => {
         body: { collection: 'memo', entryId: 'index', revision: 'stale', frontmatter: {} },
         status: 400,
         issuePath: 'collection',
-        message: '只读'
+        message: '読み取り専用'
       },
       {
         body: { collection: 'essay', entryId: '../secret', revision: 'stale', frontmatter: {} },
@@ -143,7 +143,7 @@ describe('admin content write api', () => {
         body: { collection: 'essay', entryId: 'missing', revision: 'stale', frontmatter: {} },
         status: 404,
         issuePath: 'entryId',
-        message: '未找到 content 源文件'
+        message: 'content のソースファイルが見つかりません'
       },
       {
         body: { collection: 'essay', entryId: 'demo', revision: 'stale', frontmatter: [] },

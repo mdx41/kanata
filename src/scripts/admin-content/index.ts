@@ -152,7 +152,7 @@ if (!adminContentRoot) {
     }
 
     errorBannerEl.hidden = true;
-    errorTitleEl.textContent = 'frontmatter 未写入';
+    errorTitleEl.textContent = 'frontmatter は書き込まれていません';
     errorMessageEl.hidden = true;
     errorMessageEl.textContent = '';
     errorListEl.hidden = true;
@@ -185,7 +185,7 @@ if (!adminContentRoot) {
     }
 
     setIssues(issues);
-    errorTitleEl.textContent = options.title ?? 'frontmatter 未写入';
+    errorTitleEl.textContent = options.title ?? 'frontmatter は書き込まれていません';
     if (options.message) {
       errorMessageEl.hidden = false;
       errorMessageEl.textContent = options.message;
@@ -221,15 +221,15 @@ if (!adminContentRoot) {
     const copyText = button.dataset.copyText?.trim() ?? '';
     const copyLabel = button.dataset.copyLabel?.trim() ?? '内容';
     if (!copyText) {
-      setStatus('error', `${copyLabel} 为空，无法复制`);
+      setStatus('error', `${copyLabel} が空のためコピーできません`);
       return;
     }
 
     try {
       await navigator.clipboard.writeText(copyText);
-      setStatus('ok', `已复制${copyLabel}`);
+      setStatus('ok', `コピーしました: ${copyLabel}`);
     } catch {
-      setStatus('warn', `浏览器剪贴板不可用，请手动复制${copyLabel}`);
+      setStatus('warn', `ブラウザのクリップボードが使えません。手動でコピーしてください: ${copyLabel}`);
     }
   });
 
@@ -239,11 +239,11 @@ if (!adminContentRoot) {
     || !(dryRunBtn instanceof HTMLButtonElement)
     || !(saveBtn instanceof HTMLButtonElement)
   ) {
-    setStatus('idle', '等待选择条目或复制路径', { announce: false });
+    setStatus('idle', '項目の選択またはパスのコピー待ち', { announce: false });
   } else {
     const bootstrap = parseBootstrap(bootstrapEl.textContent ?? '');
     if (!bootstrap) {
-      setStatus('error', 'Content Console 初始化失败');
+      setStatus('error', 'コンテンツ管理の初期化に失敗しました');
     } else {
       let currentRevision = bootstrap.revision;
       let busy = false;
@@ -297,17 +297,17 @@ if (!adminContentRoot) {
           return;
         }
 
-        previewTitleEl.textContent = mode === 'dry-run' ? 'dry-run 结果' : '写入结果';
+        previewTitleEl.textContent = mode === 'dry-run' ? 'dry-run 結果' : '書き込み結果';
         previewBodyEl.textContent = result.changed
-          ? `${result.relativePath || '当前条目'} 将更新以下字段。`
-          : '当前 frontmatter 与磁盘文件一致，不需要写盘。';
+          ? `${result.relativePath || '現在の項目'} は以下の項目を更新します。`
+          : '現在の frontmatter はディスク上のファイルと一致しているため、書き込みは不要です。';
         previewListEl.replaceChildren();
 
         const fragment = document.createDocumentFragment();
         if (result.changedFields.length === 0) {
           const item = document.createElement('li');
           item.className = 'admin-content-editor__preview-item';
-          item.textContent = '没有检测到字段变化。';
+          item.textContent = '項目の変更は見つかりませんでした。';
           fragment.appendChild(item);
         } else {
           for (const field of result.changedFields) {
@@ -327,7 +327,7 @@ if (!adminContentRoot) {
         syncButtons();
         clearErrors();
         clearPreview();
-        setStatus('loading', dryRun ? '正在执行 dry-run' : '正在写入 frontmatter');
+        setStatus('loading', dryRun ? 'dry-run を実行しています' : 'frontmatter を書き込んでいます');
 
         try {
           const response = await fetch(
@@ -356,15 +356,15 @@ if (!adminContentRoot) {
 
           if (!response.ok || !isRecord(payload) || payload.ok !== true) {
             const issues = getPayloadIssues(payload);
-            setStatus(response.status === 409 ? 'warn' : 'error', dryRun ? 'dry-run 未通过' : '写入失败');
+            setStatus(response.status === 409 ? 'warn' : 'error', dryRun ? 'dry-run 未通过' : '書き込みに失敗しました');
             setErrors(
               getPayloadErrors(payload).length > 0
                 ? getPayloadErrors(payload)
-                : [dryRun ? 'dry-run 校验失败，请检查当前表单与磁盘状态' : '写入 frontmatter 失败，请检查响应与控制台日志'],
+                : [dryRun ? 'dry-run の検証に失敗しました。現在のフォームとディスク状態を確認してください' : 'frontmatter の書き込みに失敗しました。レスポンスとコンソールログを確認してください'],
               issues,
               {
-                title: response.status === 409 ? '检测到外部更新' : 'frontmatter 未写入',
-                ...(response.status === 409 ? { message: '请刷新当前条目，确认最新内容后再继续编辑。' } : {})
+                title: response.status === 409 ? '外部更新を検出しました' : 'frontmatter は書き込まれていません',
+                ...(response.status === 409 ? { message: '現在の項目を更新し、最新内容を確認してから編集を続けてください。' } : {})
               }
             );
             return;
@@ -372,29 +372,29 @@ if (!adminContentRoot) {
 
           const result = getPayloadResult(payload);
           if (!result) {
-            setStatus('error', '写入响应缺少结果摘要');
-            setErrors(['响应体缺少 result 字段，请检查开发日志']);
+            setStatus('error', '書き込みレスポンスに結果概要がありません');
+            setErrors(['レスポンス本文に result フィールドがありません。開発ログを確認してください']);
             return;
           }
 
           renderPreview(result, dryRun ? 'dry-run' : 'write');
           if (dryRun) {
-            setStatus(result.changed ? 'ok' : 'ready', result.changed ? 'dry-run 校验完成' : '当前没有变更');
+            setStatus(result.changed ? 'ok' : 'ready', result.changed ? 'dry-run の検証が完了しました' : '現在、変更はありません');
             return;
           }
 
           if (!result.changed) {
-            setStatus('ready', '当前 frontmatter 没有变化');
+            setStatus('ready', '現在の frontmatter に変更はありません');
             return;
           }
 
-          setStatus('ok', 'frontmatter 已写入，正在刷新当前条目');
+          setStatus('ok', 'frontmatter を書き込みました。現在の項目を更新しています');
           window.setTimeout(() => {
             window.location.reload();
           }, 320);
         } catch {
-          setStatus('error', dryRun ? 'dry-run 请求失败' : '写入请求失败');
-          setErrors([dryRun ? 'dry-run 请求失败，请稍后重试' : '写入请求失败，请稍后重试']);
+          setStatus('error', dryRun ? 'dry-run リクエストに失敗しました' : '書き込みリクエストに失敗しました');
+          setErrors([dryRun ? 'dry-run リクエストに失敗しました，しばらくしてから再試行してください' : '書き込みリクエストに失敗しました，しばらくしてから再試行してください']);
         } finally {
           busy = false;
           syncButtons();
@@ -410,7 +410,7 @@ if (!adminContentRoot) {
       });
 
       syncButtons();
-      setStatus('idle', '等待选择条目、复制路径或执行 dry-run', { announce: false });
+      setStatus('idle', '項目の選択、パスのコピー、または dry-run の実行待ち', { announce: false });
     }
   }
 }

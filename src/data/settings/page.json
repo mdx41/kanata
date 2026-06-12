@@ -1,7 +1,7 @@
 {
   "essay": {
     "title": "記事",
-    "subtitle": "記事と覚え書き"
+    "subtitle": "日々の記録"
   },
   "archive": {
     "title": "アーカイブ",
@@ -9,7 +9,7 @@
   },
   "bits": {
     "title": "ひとこと",
-    "subtitle": "短い記録",
+    "subtitle": "呟き",
     "defaultAuthor": {
       "name": "amaura",
       "avatar": "author/avatar.webp"

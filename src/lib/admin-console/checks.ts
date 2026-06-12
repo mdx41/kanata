@@ -77,22 +77,22 @@ const ADMIN_CHECKS_CATEGORIES = [
   {
     id: 'settings',
     label: 'Settings',
-    description: '检查 settings 文件是否缺字段或结构异常。'
+    description: 'settings ファイルの不足項目や構造エラーを確認します。'
   },
   {
     id: 'essay-slug',
     label: '随笔 Slug',
-    description: '检查 slug 格式、重复和保留路由冲突。'
+    description: 'slug の形式、重複、予約ルートとの衝突を確認します。'
   },
   {
     id: 'bits-images',
-    label: 'Bits 图片',
-    description: '检查头像和图片路径是否有效，引用文件是否存在。'
+    label: 'Bits 画像',
+    description: 'アバターと画像パスが有効か、参照ファイルが存在するかを確認します。'
   },
   {
     id: 'tag',
     label: 'Tags',
-    description: '检查标签 key 是否可正常生成路由。'
+    description: 'タグ key からルートを正常に生成できるか確認します。'
   }
 ] as const satisfies readonly {
   id: AdminChecksCategoryId;
@@ -206,7 +206,7 @@ const createSettingsIssues = (): AdminChecksIssue[] => {
   }
 
   return editableState.errors.map((error, index) =>
-    createIssue('settings', 'settings 当前不可写', error, {
+    createIssue('settings', 'settings は現在書き込みできません', error, {
       fieldPath: `settings-${index + 1}`,
       href: '/admin/theme/'
     })
@@ -214,7 +214,7 @@ const createSettingsIssues = (): AdminChecksIssue[] => {
 };
 
 const createSourceReadIssue = (category: AdminChecksCategoryId, source: AdminContentSourceRecord): AdminChecksIssue =>
-  createIssue(category, 'frontmatter 解析失败', '当前文件 frontmatter 无法解析，后台未执行该项检查。', {
+  createIssue(category, 'frontmatter の解析に失敗しました', '現在のファイルの frontmatter を解析できないため、管理画面ではこのチェックを実行していません。', {
     relativePath: source.relativePath,
     collection: source.collection,
     entryId: source.entryId,
@@ -246,7 +246,7 @@ const createEssaySlugIssues = (sources: readonly AdminContentSourceRecord[]): Ad
           'essay public slug 非法',
           explicitSlug
             ? `frontmatter.slug "${explicitSlug}" 不是合法的小写 kebab-case。`
-            : `由 entry.id 拍平得到的公开 slug "${publicSlug}" 不合法，请调整路径或显式设置 slug。`,
+            : `由 entry.id 拍平得到的公开 slug "${publicSlug}" が不正です。パスを調整するか、slug を明示してください。`,
           {
             relativePath: source.relativePath,
             fieldPath: 'slug',
@@ -327,15 +327,15 @@ const createBitsImagesIssues = (sources: readonly AdminContentSourceRecord[]): A
         issues.push(
           createIssue(
             'bits-images',
-            'bits.author.avatar 路径非法',
-            'author.avatar 只允许相对图片路径，不要带 public/、/、URL、..、? 或 #。',
+            'bits.author.avatar のパスが不正です',
+            'author.avatar は相対画像パスのみ使えます。public/、/、URL、..、?、# は含めないでください。',
             {
               relativePath: source.relativePath,
               fieldPath: 'author.avatar',
               collection: source.collection,
               entryId: source.entryId,
               href: resolveContentHref(source.collection, source.entryId),
-              detail: `当前值：${rawAvatar}`
+              detail: `現在の値：${rawAvatar}`
             }
           )
         );
@@ -345,8 +345,8 @@ const createBitsImagesIssues = (sources: readonly AdminContentSourceRecord[]): A
           issues.push(
             createIssue(
               'bits-images',
-              'bits.author.avatar 指向的文件不存在',
-              `author.avatar 指向的本地文件不存在：${avatarFilePath}`,
+              'bits.author.avatar が指すファイルが存在しません',
+              `author.avatar が指すローカルファイルが存在しません：${avatarFilePath}`,
               {
                 relativePath: source.relativePath,
                 fieldPath: 'author.avatar',
@@ -370,15 +370,15 @@ const createBitsImagesIssues = (sources: readonly AdminContentSourceRecord[]): A
         issues.push(
           createIssue(
             'bits-images',
-            'bits.images[*].src 路径非法',
-            'bits.images[*].src 只允许 public/** 下的相对图片路径或 https:// 远程 URL。',
+            'bits.images[*].src のパスが不正です',
+            'bits.images[*].src は public/** 配下の相対画像パス、または https:// のリモートURLのみ使えます。',
             {
               relativePath: source.relativePath,
               fieldPath,
               collection: source.collection,
               entryId: source.entryId,
               href: resolveContentHref(source.collection, source.entryId),
-              detail: `当前值：${image.src}`
+              detail: `現在の値：${image.src}`
             }
           )
         );
@@ -391,8 +391,8 @@ const createBitsImagesIssues = (sources: readonly AdminContentSourceRecord[]): A
           issues.push(
             createIssue(
               'bits-images',
-              'bits.images[*].src 指向的文件不存在',
-              `bits.images[*].src 指向的本地文件不存在：${imageFilePath}`,
+              'bits.images[*].src が指すファイルが存在しません',
+              `bits.images[*].src が指すローカルファイルが存在しません：${imageFilePath}`,
               {
                 relativePath: source.relativePath,
                 fieldPath,

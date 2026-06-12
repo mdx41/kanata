@@ -16,15 +16,15 @@ const { footerStartYearMin, footerStartYearMax, socialCustomLimit } = Astro.prop
   <legend class="admin-group__legend">
     <AdminIcon name="admin-site" class="admin-group__legend-icon" size={14} />
     <span class="admin-group__legend-copy">
-      <span class="admin-group__legend-zh">站点设置</span>
+      <span class="admin-group__legend-zh">サイト設定</span>
       <span class="admin-group__legend-en">Site</span>
     </span>
   </legend>
   <div class="admin-grid">
     <label class="admin-field">
       <span class="admin-label">
-        <span class="admin-label__main">站点标题</span>
-        <span class="admin-label__hint">（用于浏览器标题 / RSS / 分享）</span>
+        <span class="admin-label__main">サイトタイトル</span>
+        <span class="admin-label__hint">（ブラウザタイトル / RSS / 共有に使用）</span>
       </span>
       <input class="admin-field__control" id="site-title" type="text" autocomplete="off" />
     </label>
@@ -38,14 +38,14 @@ const { footerStartYearMin, footerStartYearMax, socialCustomLimit } = Astro.prop
     <label class="admin-field admin-field--full">
       <span class="admin-label">
         <span class="admin-label__main">默认 SEO 描述</span>
-        <span class="admin-label__hint">（用于搜索结果和分享摘要）</span>
+        <span class="admin-label__hint">（検索結果と共有時の要約に使用）</span>
       </span>
       <textarea class="admin-field__control admin-field__control--singleline-textarea" id="site-description" rows="1"></textarea>
     </label>
     <label class="admin-field">
       <span class="admin-label">
         <span class="admin-label__main">页脚年份</span>
-        <span class="admin-label__hint">（结束年份自动拾取当前年）</span>
+        <span class="admin-label__hint">（終了年は現在年を自動で使います）</span>
       </span>
       <span class="admin-year-range">
         <input
@@ -67,11 +67,11 @@ const { footerStartYearMin, footerStartYearMax, socialCustomLimit } = Astro.prop
           value={String(footerStartYearMax)}
           readonly
           tabindex="-1"
-          aria-label="当前年份（自动）"
+          aria-label="現在年（自動）"
         />
         <label class="admin-year-range__toggle">
           <input id="site-footer-show-current-year" type="checkbox" checked />
-          <span class="sr-only">显示当前年</span>
+          <span class="sr-only">現在年を表示</span>
         </label>
       </span>
     </label>
@@ -92,7 +92,7 @@ const { footerStartYearMin, footerStartYearMax, socialCustomLimit } = Astro.prop
           <label class="admin-label__main" for="site-admin-overview-hidden-message">
             <code>/admin/</code> Overview 公开访问（不收录）
           </label>
-          <span class="admin-label__hint">（构建后生效；关闭公开时，该页仅显示下方文字）</span>
+          <span class="admin-label__hint">（ビルド後に反映されます。公開を閉じると、このページには下の文言だけを表示します）</span>
         </span>
         <label class="admin-label__toggle" for="site-admin-overview-public-visible">
           <input id="site-admin-overview-public-visible" type="checkbox" checked />

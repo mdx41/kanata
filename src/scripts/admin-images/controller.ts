@@ -152,8 +152,8 @@ export const initAdminImagesConsole = () => {
   const bootstrap = parseBootstrap(bootstrapEl.textContent ?? '');
   if (!bootstrap) {
     statusEl.dataset.state = 'error';
-    statusEl.textContent = '图库初始化失败';
-    statusLiveEl.textContent = '图库初始化失败';
+    statusEl.textContent = '画像管理の初期化に失敗しました';
+    statusLiveEl.textContent = '画像管理の初期化に失敗しました';
     return;
   }
 
@@ -338,7 +338,7 @@ export const initAdminImagesConsole = () => {
     filterToggleBtn.dataset.active = filterVisible ? 'true' : 'false';
     filterToggleBtn.dataset.filtered = filtered ? 'true' : 'false';
     filterToggleBtn.setAttribute('aria-expanded', filterVisible ? 'true' : 'false');
-    filterToggleBtn.setAttribute('aria-label', filterVisible ? '收起图片筛选' : '展开图片筛选');
+    filterToggleBtn.setAttribute('aria-label', filterVisible ? '画像フィルターを閉じる' : '画像フィルターを開く');
     filtersPanelEl.hidden = !filterVisible;
     filtersPanelEl.dataset.open = filterVisible ? 'true' : 'false';
     filtersPanelEl.setAttribute('aria-hidden', filterVisible ? 'false' : 'true');
@@ -348,7 +348,7 @@ export const initAdminImagesConsole = () => {
     searchToggleBtn.dataset.active = searchVisible ? 'true' : 'false';
     searchToggleBtn.setAttribute('aria-expanded', searchVisible ? 'true' : 'false');
     recentBtn.disabled = busy;
-    recentBtn.textContent = currentState.scope === 'recent' ? '返回分类' : ADMIN_IMAGE_SCOPE_LABELS.recent;
+    recentBtn.textContent = currentState.scope === 'recent' ? '分類へ戻る' : ADMIN_IMAGE_SCOPE_LABELS.recent;
     recentBtn.setAttribute('aria-pressed', currentState.scope === 'recent' ? 'true' : 'false');
     refreshBtn.disabled = busy;
     listViewBtn.disabled = busy;
@@ -469,7 +469,7 @@ export const initAdminImagesConsole = () => {
       detailMetaCache.set(assetPath, meta);
       detailMetaErrors.delete(assetPath);
     } catch (error) {
-      const message = error instanceof Error ? error.message : '图片信息读取失败';
+      const message = error instanceof Error ? error.message : '画像情報の読み取りに失敗しました';
       detailMetaErrors.set(assetPath, message);
       if (syncUi && selectedPath === assetPath) {
         setStatus('warn', message);
@@ -549,7 +549,7 @@ export const initAdminImagesConsole = () => {
     if (shouldPrefetch) {
       busy = true;
       syncControls();
-      setStatus('loading', '正在读取当前页图片信息...', false);
+      setStatus('loading', '現在のページの画像情報を読み取っています...', false);
       await Promise.all(prefetchPaths.map((assetPath) => loadDetailMeta(assetPath, { syncUi: false })));
     }
 
@@ -598,7 +598,7 @@ export const initAdminImagesConsole = () => {
       totalCount: browsePage.totalCount,
       totalPages: browsePage.totalPages,
       updateLocation,
-      successMessage: browsePage.totalCount > 0 ? `已匹配 ${browsePage.totalCount} 张图片` : '没有找到符合条件的图片'
+      successMessage: browsePage.totalCount > 0 ? `一致しました: ${browsePage.totalCount} 枚の画像` : '条件に一致する画像が見つかりませんでした'
     });
   };
 
@@ -620,17 +620,17 @@ export const initAdminImagesConsole = () => {
     const token = ++requestToken;
     busy = true;
     syncControls();
-    setStatus('loading', '正在加载图片...', false);
+    setStatus('loading', '画像を読み込んでいます...', false);
 
     try {
       const result = await fetchList(bootstrap.listEndpoint, currentState, getCurrentPageSize());
       if (token !== requestToken) return;
 
       applyListResult(result, { updateLocation });
-      setStatus('ok', result.totalCount > 0 ? `已加载 ${result.totalCount} 张图片` : '没有找到符合条件的图片', false);
+      setStatus('ok', result.totalCount > 0 ? `読み込みました: ${result.totalCount} 枚の画像` : '条件に一致する画像が見つかりませんでした', false);
     } catch (error) {
       if (token !== requestToken) return;
-      clearLoadFailure(error instanceof Error ? error.message : '图片列表读取失败');
+      clearLoadFailure(error instanceof Error ? error.message : '画像一覧の読み取りに失敗しました');
     } finally {
       if (token === requestToken) {
         busy = false;
@@ -709,15 +709,15 @@ export const initAdminImagesConsole = () => {
     }
 
     button.dataset.state = 'copied';
-    button.setAttribute('aria-label', `已复制${copyLabel}`);
-    button.setAttribute('title', `已复制${copyLabel}`);
+    button.setAttribute('aria-label', `コピーしました: ${copyLabel}`);
+    button.setAttribute('title', `コピーしました: ${copyLabel}`);
 
     const timer = window.setTimeout(() => {
       if (!button.isConnected) return;
       delete button.dataset.state;
       delete button.dataset.feedbackTimer;
-      button.setAttribute('aria-label', `复制${copyLabel}`);
-      button.setAttribute('title', '点击复制');
+      button.setAttribute('aria-label', `コピー${copyLabel}`);
+      button.setAttribute('title', 'クリックしてコピー');
     }, 1100);
 
     button.dataset.feedbackTimer = String(timer);
@@ -837,18 +837,18 @@ export const initAdminImagesConsole = () => {
     const copyValue = target.dataset.copyValue ?? '';
     const copyLabel = target.dataset.copyLabel?.trim() ?? '内容';
     if (!copyValue) {
-      setStatus('error', `${copyLabel}为空，无法复制`);
+      setStatus('error', `${copyLabel}が空のためコピーできません`);
       return;
     }
 
     try {
       await copyText(copyValue);
-      setStatus('ok', `已复制${copyLabel}`);
+      setStatus('ok', `コピーしました: ${copyLabel}`);
       if (target.dataset.inlineFeedback === 'true') {
         triggerInlineCopyFeedback(target, copyLabel);
       }
     } catch (error) {
-      setStatus('error', error instanceof Error ? error.message : `复制${copyLabel}失败`);
+      setStatus('error', error instanceof Error ? error.message : `コピー${copyLabel}失敗しました`);
     }
   });
 
@@ -885,8 +885,8 @@ export const initAdminImagesConsole = () => {
       setStatus(
         'ok',
         resetToDefaultView
-          ? (currentTotalCount > 0 ? `图库已刷新，已返回全部资源（共 ${currentTotalCount} 张图片）` : '图库已刷新，已返回全部资源')
-          : (currentTotalCount > 0 ? `图库已刷新，当前共 ${currentTotalCount} 张图片` : '图库已刷新')
+          ? (currentTotalCount > 0 ? `画像管理を更新し、すべてのリソースへ戻りました（合計 ${currentTotalCount} 枚の画像）` : '画像管理を更新し、すべてのリソースへ戻りました')
+          : (currentTotalCount > 0 ? `画像管理を更新しました。現在 ${currentTotalCount} 枚の画像` : '画像管理を更新しました')
       );
     }
   } else {

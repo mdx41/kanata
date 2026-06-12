@@ -164,7 +164,7 @@ export const createAdminDataUi = ({
     errors: readonly string[],
     options: AdminDataErrorOptions = {}
   ) => {
-    errorTitleEl.textContent = options.title ?? '导入导出未完成';
+    errorTitleEl.textContent = options.title ?? 'インポートエクスポート未完成';
 
     if (options.message) {
       errorMessageEl.hidden = false;
@@ -368,8 +368,8 @@ export const createAdminDataUi = ({
       const values = document.createElement('div');
       values.className = 'admin-data-terminal__change-values';
       values.append(
-        createChangeValueRow('当前', change.before, 'current'),
-        createChangeValueRow('导入', change.after, 'imported')
+        createChangeValueRow('現在', change.before, 'current'),
+        createChangeValueRow('インポート', change.after, 'imported')
       );
 
       item.append(head, values);
@@ -419,8 +419,8 @@ export const createAdminDataUi = ({
   const resetPreview = () => {
     showPreviewEmpty({
       state: 'idle',
-      title: '等待导入快照',
-      body: '选择 JSON 快照并执行 dry-run 后，此处显示预览结果'
+      title: 'インポートスナップショット待ち',
+      body: '選択 JSON 快照并执行 dry-run 后，此处表示预览结果'
     });
   };
 
@@ -443,8 +443,8 @@ export const createAdminDataUi = ({
     if (changedGroups.length === 0) {
       previewBodyEl.textContent = options.body ?? '';
       const cleanState = createResultItem(
-        '当前导入快照与本地 settings 一致',
-        'dry-run 未检测到需要写入的分组，可以继续保留当前本地配置。'
+        '現在のインポートスナップショットはローカル settings と一致しています',
+        'dry-run では書き込みが必要なグループは見つかりませんでした。現在のローカル設定をそのまま保持できます。'
       );
       resultListEl.appendChild(
         cleanState.item
@@ -458,7 +458,7 @@ export const createAdminDataUi = ({
     );
     if (options.state === 'diff') {
       previewBodyEl.classList.add('admin-data-terminal__section-body--summary');
-      previewBodyEl.textContent = `${changedGroups.length} 个分组待更新，共 ${totalChangedCount} 处字段将变更`;
+      previewBodyEl.textContent = `${changedGroups.length} 个分组更新待ち，合計 ${totalChangedCount} 箇所の項目が変更されます`;
     }
 
     const fragment = document.createDocumentFragment();
@@ -468,7 +468,7 @@ export const createAdminDataUi = ({
 
       const changedCount = getWriteResultChangedFieldCount(result);
       const resultItem = createResultItem(
-        `${GROUP_LABELS[group]} · ${result.written ? '已写入' : '待更新'}`,
+        `${GROUP_LABELS[group]} · ${result.written ? '書き込み済み' : '更新待ち'}`,
         GROUP_FILES[group],
         {
           marker: '#',
@@ -575,10 +575,10 @@ export const createAdminDataUi = ({
   };
 
   const showBootstrapError = (message: string) => {
-    setStatus('error', '初始化失败');
+    setStatus('error', '初始化失敗しました');
     showPreviewEmpty({
       state: 'error',
-      title: 'Data Console 初始化失败',
+      title: 'データ管理の初期化に失敗しました',
       body: message
     });
   };

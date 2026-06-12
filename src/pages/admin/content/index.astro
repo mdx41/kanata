@@ -9,7 +9,7 @@ import {
 import { createWithBase } from '../../../utils/format';
 
 const isDev = import.meta.env.DEV;
-// Content Console 暂停对 dev 环境开放，保留实现供后续前端技术栈重构恢复。
+// コンテンツ管理は現在 dev 環境でも一時停止中。実装は将来の管理UI再構築用に残しています。
 const isAdminContentConsoleEnabled: boolean = false;
 const shouldShowContentConsole = isDev && isAdminContentConsoleEnabled;
 const shouldShowAdminNav = isDev;
@@ -39,11 +39,11 @@ const contentOverviewTotals = contentOverviewDevState
   : null;
 ---
 
-<AdminLayout title="Content Console" stylesHref={adminStylesHref}>
+<AdminLayout title="コンテンツ管理" stylesHref={adminStylesHref}>
   <AdminShell
     currentRoute="content"
-    title="Content Console"
-    subtitle="内容管理"
+    title="コンテンツ管理"
+    subtitle="コンテンツ管理"
     showNav={shouldShowAdminNav}
   >
     {
@@ -52,15 +52,15 @@ const contentOverviewTotals = contentOverviewDevState
           <article class="admin-overview-card admin-content-home__lead">
             <div class="admin-content-home__lead-copy">
               <p class="admin-overview-card__eyebrow">Content</p>
-              <h2 class="admin-overview-card__title">内容总览</h2>
+              <h2 class="admin-overview-card__title">コンテンツ概要</h2>
               <p class="admin-overview-card__body">
-                当前共收口 {contentOverviewTotals?.totalCount ?? 0} 条内容，其中草稿 {contentOverviewTotals?.draftCount ?? 0} 条。
-                当前页面只负责 collection 概览与能力分流；具体筛选、分页与编辑入口放在各 collection 列表页。
+                現在 {contentOverviewTotals?.totalCount ?? 0} 件のコンテンツを管理しています。下書きは {contentOverviewTotals?.draftCount ?? 0} 件です。
+                このページでは collection の概要と入口を扱います。具体的なフィルター、ページ切り替え、編集入口は各 collection の一覧ページにあります。
               </p>
             </div>
             <div class="admin-overview-card__actions admin-content-home__lead-actions">
-              <a class="admin-btn admin-btn--primary" href={withBase('/admin/content/essay/')}>进入 Essay 列表</a>
-              <a class="admin-btn admin-btn--ghost" href={withBase('/admin/')}>返回 Admin 首页</a>
+              <a class="admin-btn admin-btn--primary" href={withBase('/admin/content/essay/')}>Essay 一覧へ進む</a>
+              <a class="admin-btn admin-btn--ghost" href={withBase('/admin/')}>Admin ホームへ戻る</a>
             </div>
           </article>
 
@@ -74,7 +74,7 @@ const contentOverviewTotals = contentOverviewDevState
                   </div>
                   <h2 class="admin-overview-card__title">{summary.label}</h2>
                   <p class="admin-overview-card__body">
-                    共 {summary.totalCount} 条内容，其中草稿 {summary.draftCount} 条；最近更新时间 {summary.latestDateLabel}。
+                    合計 {summary.totalCount} 件のコンテンツがあります。下書きは {summary.draftCount} 件、最終更新は {summary.latestDateLabel}。
                   </p>
                   <div class="admin-overview-card__actions">
                     <a class="admin-btn admin-btn--secondary" href={withBase(getAdminContentCollectionHref(summary.key))}>
@@ -88,19 +88,19 @@ const contentOverviewTotals = contentOverviewDevState
 
           <article class="admin-overview-card admin-content-home__boundary">
             <p class="admin-overview-card__eyebrow">Current Boundary</p>
-            <h2 class="admin-overview-card__title">当前入口负责总览与分流</h2>
+            <h2 class="admin-overview-card__title">現在入口负责总览与分流</h2>
             <ul class="admin-overview-card__list">
               <li>真实路由：`/admin/content/` 与 `/admin/content/:collection/`。</li>
               <li>URL 次级状态：`q / draft / tag / year / sort / page / entry`。</li>
-              <li>维护动作：公开页跳转、路径复制、`entry.id` 复制。</li>
-              <li>`essay / bits` 的 frontmatter dry-run 与保存已下沉到 collection 页；`memo` 继续只读。</li>
-              <li>正文编辑与正文写盘仍不在当前范围内。</li>
+              <li>管理操作: 公開ページへの移動、パスのコピー、`entry.id` のコピー。</li>
+              <li>`essay / bits` の frontmatter dry-run と保存は collection ページへ移動済みです。`memo` は引き続き読み取り専用です。</li>
+              <li>本文編集と本文の書き込みは、現在の対象外です。</li>
             </ul>
           </article>
         </section>
       ) : (
         <AdminReadonlyNotice>
-          后台文章管理与可视化写作正在开发中。
+          管理画面の記事管理とビジュアル編集は開発中です。
         </AdminReadonlyNotice>
       )
     }

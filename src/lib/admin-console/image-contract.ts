@@ -5,12 +5,12 @@ export type AdminImageScopeKey = 'recent';
 export const ADMIN_IMAGE_DEFAULT_LIST_LIMIT = 20;
 
 export const ADMIN_IMAGE_BROWSE_GROUP_LABELS = {
-  all: '全部',
+  all: 'すべて',
   essay: '随笔',
   bits: 'Bits',
   memo: 'Memo',
-  assets: '配置素材',
-  pages: '页面插图',
+  assets: '設定素材',
+  pages: 'ページ画像',
   uncategorized: '未归类'
 } as const satisfies Record<AdminImageBrowseGroup, string>;
 

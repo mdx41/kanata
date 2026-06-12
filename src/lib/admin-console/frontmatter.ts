@@ -50,13 +50,13 @@ export const splitMarkdownFrontmatter = (sourceText: string): MarkdownFrontmatte
     }
 
     if (lineEnd === -1) {
-      throw new Error('Markdown frontmatter 缺少关闭标记');
+      throw new Error('Markdown frontmatter の終了マーカーがありません');
     }
 
     index = lineEnd + 1;
   }
 
-  throw new Error('Markdown frontmatter 缺少关闭标记');
+  throw new Error('Markdown frontmatter の終了マーカーがありません');
 };
 
 export const parseMarkdownFrontmatterDocument = (frontmatterText: string | null) => {

@@ -94,7 +94,7 @@ const isAdminImageClientItem = (item: unknown): item is AdminImageClientItem =>
 
 const parseAdminImageClientItem = (item: unknown): AdminImageClientItem => {
   if (!isAdminImageClientItem(item)) {
-    throw new Error('图片列表响应格式无效');
+    throw new Error('画像一覧のレスポンス形式が無効です');
   }
 
   return item;
@@ -114,7 +114,7 @@ export const isAdminImageClientMeta = (meta: unknown): meta is AdminImageClientM
 
 export const parseAdminImageListResponse = (payload: unknown): AdminImageListPage<AdminImageClientItem> => {
   if (!isRecord(payload) || payload.ok !== true || !isRecord(payload.result) || !Array.isArray(payload.result.items)) {
-    throw new Error('图片列表响应格式无效');
+    throw new Error('画像一覧のレスポンス形式が無効です');
   }
 
   if (
@@ -122,7 +122,7 @@ export const parseAdminImageListResponse = (payload: unknown): AdminImageListPag
     || !isPositiveInteger(payload.result.totalPages)
     || !isNonNegativeInteger(payload.result.totalCount)
   ) {
-    throw new Error('图片列表响应格式无效');
+    throw new Error('画像一覧のレスポンス形式が無効です');
   }
 
   return {

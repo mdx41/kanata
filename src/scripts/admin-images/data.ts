@@ -61,7 +61,7 @@ export const toCachedMeta = (item: AdminImageListItem): AdminImageClientMeta => 
   previewSrc: item.previewSrc
 });
 
-const LIST_RESPONSE_FORMAT_ERROR = '图片列表响应格式无效';
+const LIST_RESPONSE_FORMAT_ERROR = '画像一覧のレスポンス形式が無効です';
 
 const isFilterOption = (item: unknown): item is AdminImageFilterOption =>
   isRecord(item)
@@ -217,7 +217,7 @@ export const parseBootstrap = (text: string): AdminImageBootstrap | null => {
 
 const parseListResponse = (payload: unknown): AdminImageListResponse => {
   if (!isRecord(payload) || payload.ok !== true || !isRecord(payload.result) || !Array.isArray(payload.result.items)) {
-    throw new Error('图片列表响应格式无效');
+    throw new Error('画像一覧のレスポンス形式が無効です');
   }
 
   return parseListResult(payload.result);
@@ -246,14 +246,14 @@ export const fetchList = async (
     params.set('q', state.query.trim());
   }
 
-  const payload = await fetchAdminImageJson(`${endpoint}?${params.toString()}`, '图片列表请求失败');
+  const payload = await fetchAdminImageJson(`${endpoint}?${params.toString()}`, '画像一覧のリクエストに失敗しました');
   return parseListResponse(payload);
 };
 
 export const fetchMetaByPath = async (endpoint: string, assetPath: string): Promise<AdminImageClientMeta> => {
   const payload = await fetchAdminImageJson(
     `${endpoint}?${new URLSearchParams({ path: assetPath }).toString()}`,
-    '图片元数据请求失败'
+    '画像メタデータのリクエストに失敗しました'
   );
   return parseAdminImageMetaResponse(payload);
 };
@@ -329,6 +329,6 @@ export const copyText = async (value: string) => {
   textarea.remove();
 
   if (!copied) {
-    throw new Error('浏览器阻止了复制动作');
+    throw new Error('ブラウザがコピー操作をブロックしました');
   }
 };

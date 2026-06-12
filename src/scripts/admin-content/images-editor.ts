@@ -111,7 +111,7 @@ const serializeRows = (rows: readonly ImageRowRefs[]): string => {
 
 const renumberRows = (rows: readonly ImageRowRefs[]) => {
   rows.forEach((refs, index) => {
-    refs.titleEl && (refs.titleEl.textContent = `图片 #${index + 1}`);
+    refs.titleEl && (refs.titleEl.textContent = `画像 #${index + 1}`);
     if (refs.srcField) refs.srcField.dataset.fieldPath = `images[${index}].src`;
     if (refs.widthField) refs.widthField.dataset.fieldPath = `images[${index}].width`;
     if (refs.heightField) refs.heightField.dataset.fieldPath = `images[${index}].height`;
@@ -149,11 +149,11 @@ export const initAdminContentBitsImagesEditor = ({
     const value = refs.srcInput?.value.trim() ?? '';
     setPreview(refs, null);
     if (!value) {
-      setMeta(refs, '等待选择图片或输入路径');
+      setMeta(refs, '画像を選択するかパスを入力してください');
       return;
     }
     if (!picker) {
-      setMeta(refs, '当前页面未挂载 image picker');
+      setMeta(refs, '現在のページには image picker がマウントされていません');
       return;
     }
 
@@ -168,7 +168,7 @@ export const initAdminContentBitsImagesEditor = ({
       }
     } catch (error) {
       if ((refs.srcInput?.value.trim() ?? '') !== value) return;
-      setMeta(refs, error instanceof Error ? error.message : '路径暂时无法读取');
+      setMeta(refs, error instanceof Error ? error.message : 'パスを一時的に読み取れません');
     } finally {
       syncHiddenInput();
     }
@@ -202,8 +202,8 @@ export const initAdminContentBitsImagesEditor = ({
       setMeta(
         refs,
         (refs.srcInput?.value.trim() ?? '')
-          ? '等待确认路径并读取元数据'
-          : '等待选择图片或输入路径'
+          ? 'パスの確認とメタデータ読み取り待ち'
+          : '画像を選択するかパスを入力してください'
       );
       syncHiddenInput();
       scheduleMetaPreview();
@@ -224,7 +224,7 @@ export const initAdminContentBitsImagesEditor = ({
         refs.heightInput && (refs.heightInput.value = '');
         refs.altInput && (refs.altInput.value = '');
         setPreview(refs, null);
-        setMeta(refs, '等待选择图片或输入路径');
+        setMeta(refs, '画像を選択するかパスを入力してください');
       } else {
         row.remove();
       }
@@ -233,13 +233,13 @@ export const initAdminContentBitsImagesEditor = ({
 
     refs.pickBtn?.addEventListener('click', () => {
       if (!picker) {
-        setStatus('warn', '当前页面未挂载 image picker');
+        setStatus('warn', '現在のページには image picker がマウントされていません');
         return;
       }
       picker.open({
         field: 'bits.images',
-        title: '为 bits.images 选择本地图片',
-        description: '仅列出可直接写入 `bits.images[*].src` 的本地 public/** 资源。',
+        title: 'bits.images 用のローカル画像を選択',
+        description: '`bits.images[*].src` に直接書き込めるローカル public/** リソースのみ表示します。',
         query: refs.srcInput?.value ?? '',
         onSelect: (item) => {
           if (refs.srcInput) refs.srcInput.value = item.value;
@@ -248,7 +248,7 @@ export const initAdminContentBitsImagesEditor = ({
           setPreview(refs, item.previewSrc);
           setMeta(refs, formatAdminImageMetaSummary({ kind: 'local', origin: item.origin, width: item.width, height: item.height, size: item.size }));
           syncHiddenInput();
-          setStatus('ok', `已选择本地图片：${item.value}`);
+          setStatus('ok', `ローカル画像を選択しました：${item.value}`);
         }
       });
     });
@@ -257,7 +257,7 @@ export const initAdminContentBitsImagesEditor = ({
     if ((refs.srcInput?.value ?? '').trim()) {
       applyMetaNow();
     } else {
-      setMeta(refs, '等待选择图片或输入路径');
+      setMeta(refs, '画像を選択するかパスを入力してください');
     }
   };
 

@@ -10,9 +10,9 @@ const escapeHtml = (value: string): string =>
     .replaceAll("'", '&#39;');
 
 const getOriginBadgeLabel = (origin: AdminImageBrowseItem['origin']): string => {
-  if (origin === 'public') return '公开资源';
+  if (origin === 'public') return '公開リソース';
   if (origin === 'src/assets') return '站点素材';
-  return '内容附件';
+  return 'コンテンツ添付';
 };
 
 const getCardOverlayMetaText = (
@@ -147,7 +147,7 @@ export const renderSubgroupButtons = ({
   subgroupsEl.append(
     createChipButton(
       {
-        label: '全部',
+        label: 'すべて',
         count: getFilterOptionCount(subgroupOptions)
       },
       currentSubgroup.length === 0,
@@ -356,12 +356,12 @@ export const renderDetail = ({
 
   const dimensionsText = detailMeta?.width && detailMeta.height
     ? `${detailMeta.width} × ${detailMeta.height}`
-    : detailLoading ? '正在读取…' : detailError ? '读取失败' : '未读取';
+    : detailLoading ? '読み取り中…' : detailError ? '読み取り失敗しました' : '未読み取り';
   const sizeText = detailMeta
     ? formatAdminImageBytes(detailMeta.size)
-    : detailLoading ? '正在读取…' : detailError ? '读取失败' : '未读取';
+    : detailLoading ? '読み取り中…' : detailError ? '読み取り失敗しました' : '未読み取り';
   const typeText = detailMeta?.mimeType
-    ?? (detailLoading ? '正在读取…' : detailError ? '读取失败' : '未读取');
+    ?? (detailLoading ? '読み取り中…' : detailError ? '読み取り失敗しました' : '未読み取り');
 
   const detailBadges = [
     `<span class="admin-images-browser__badge admin-images-browser__origin-badge" data-origin="${escapeHtml(item.origin)}">${escapeHtml(getOriginBadgeLabel(item.origin))}</span>`,
@@ -373,7 +373,7 @@ export const renderDetail = ({
       ? `<span class="admin-images-browser__badge">${escapeHtml(item.browseSubgroupLabel)}</span>`
       : '',
     detailMeta?.size && detailMeta.size >= largeFileThreshold
-      ? '<span class="admin-images-browser__badge">大文件</span>'
+      ? '<span class="admin-images-browser__badge">大きいファイル</span>'
       : ''
   ]
     .filter(Boolean)
@@ -381,8 +381,8 @@ export const renderDetail = ({
 
   const hasPreferredValue = item.preferredValue && item.preferredValue !== item.path;
   const fieldValue = hasPreferredValue ? item.preferredValue! : item.path;
-  const fieldLabel = hasPreferredValue ? '可用值 (field-compatible)' : '文件路径';
-  const fieldCopyLabel = hasPreferredValue ? '可用值' : '文件路径';
+  const fieldLabel = hasPreferredValue ? '可用值 (field-compatible)' : 'ファイルパス';
+  const fieldCopyLabel = hasPreferredValue ? '可用值' : 'ファイルパス';
   const previewSrc = detailMeta?.previewSrc ?? item.previewSrc;
 
   detailEl.hidden = false;
@@ -416,14 +416,14 @@ export const renderDetail = ({
               data-copy-value="${escapeHtml(fieldValue)}"
               data-copy-label="${escapeHtml(fieldCopyLabel)}"
               data-inline-feedback="true"
-              title="点击复制"
-              aria-label="复制${escapeHtml(fieldCopyLabel)}"
+              title="クリックしてコピー"
+              aria-label="コピー${escapeHtml(fieldCopyLabel)}"
             >${copyIcon}</button>
           </div>
         </div>
 
         <div class="admin-images-browser__detail-field">
-          <h4 class="admin-images-browser__detail-label admin-images-browser__detail-label--disabled">Markdown 引用（待开发）</h4>
+          <h4 class="admin-images-browser__detail-label admin-images-browser__detail-label--disabled">Markdown 引用（開発中）</h4>
           <div class="admin-images-browser__code-wrapper admin-images-browser__code-wrapper--disabled" aria-disabled="true">
             <code class="admin-images-browser__detail-code">—</code>
           </div>
@@ -434,15 +434,15 @@ export const renderDetail = ({
             class="admin-btn admin-btn--primary"
             type="button"
             data-copy-value="${escapeHtml(item.path)}"
-            data-copy-label="资源路径"
+            data-copy-label="リソースパス"
           >
             ${linkIcon}
-            复制资源路径
+            コピーリソースパス
           </button>
           ${previewSrc
         ? `<a class="admin-btn admin-btn--ghost" href="${escapeHtml(previewSrc)}" target="_blank" rel="noreferrer">
               ${eyeIcon}
-              浏览器新标签中打开
+              ブラウザの新しいタブで開く
             </a>`
         : ''}
         </div>

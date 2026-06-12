@@ -29,8 +29,8 @@ type AdminConsoleUiStateContext = {
   queryAll: <T extends Element>(parent: ParentNode, selector: string) => T[];
 };
 
-const STATUS_WAITING_SAVE = '等待保存';
-const STATUS_CLEAN = '当前配置无未保存更改';
+const STATUS_WAITING_SAVE = '保存待ち';
+const STATUS_CLEAN = '現在設定无未保存更改';
 
 export const createAdminConsoleUiState = ({
   root,
@@ -207,7 +207,7 @@ export const createAdminConsoleUiState = ({
     },
     setValidating: (next: boolean): void => {
       isValidating = next;
-      validateBtn.textContent = next ? '校验中...' : '检查配置';
+      validateBtn.textContent = next ? '検証中...' : '設定をチェック';
       syncInteractiveAvailability();
     }
   };

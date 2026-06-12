@@ -65,7 +65,7 @@ export const validateAdminJsonWriteRequest = (
   if (!contentType.includes('application/json')) {
     return {
       status: 415,
-      error: `仅允许 application/json 请求写入 ${targetLabel}`
+      error: `application/json リクエストのみ書き込みできます: ${targetLabel}`
     };
   }
 
@@ -77,14 +77,14 @@ export const validateAdminJsonWriteRequest = (
   if (!requestOrigin) {
     return {
       status: 403,
-      error: '写入请求缺少来源标识，仅允许从当前开发站点同源提交'
+      error: '書き込みリクエストに送信元の識別情報がありません。現在の開発サイトと同一オリジンからの送信のみ許可します'
     };
   }
 
   if (requestOrigin !== currentOrigin) {
     return {
       status: 403,
-      error: `仅允许从当前开发站点同源写入 ${targetLabel}`
+      error: `現在の開発サイトと同一オリジンからのみ書き込みできます: ${targetLabel}`
     };
   }
 
@@ -125,7 +125,7 @@ export const readAdminJsonRequestBody = async (
     return {
       ok: false,
       status: 400,
-      error: '请求体不是合法 JSON'
+      error: 'リクエスト本文が有効な JSON ではありません'
     };
   }
 };

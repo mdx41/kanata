@@ -97,13 +97,13 @@ const ADMIN_IMAGE_ALL_ORIGINS = ['public', 'src/assets', 'src/content'] as const
 export const ADMIN_IMAGE_DIRECTORY_OPTIONS = [
   {
     value: '',
-    label: '全部资源',
-    description: '查看站点里可用的本地图片。'
+    label: 'すべてリソース',
+    description: 'サイト内で使えるローカル画像を確認します。'
   },
   {
     value: 'public/author',
-    label: '头像资源',
-    description: '查看作者头像和默认头像图片。'
+    label: 'アバター素材',
+    description: '作者アバターとデフォルトアバター画像を確認します。'
   },
   {
     value: 'public/bits',
@@ -112,23 +112,23 @@ export const ADMIN_IMAGE_DIRECTORY_OPTIONS = [
   },
   {
     value: 'public/images',
-    label: '页面插图',
-    description: '查看首页和普通页面使用的插图。'
+    label: 'ページ画像',
+    description: 'トップページと通常ページで使う画像を確認します。'
   },
   {
     value: 'public',
-    label: '公开图片',
-    description: '查看 public 下的全部公开图片。'
+    label: '公開画像',
+    description: '查看 public 下的すべて公開画像。'
   },
   {
     value: 'src/assets',
     label: '站点素材',
-    description: '查看站点主题和首页使用的本地素材。'
+    description: 'サイトテーマとトップページで使うローカル素材を確認します。'
   },
   {
     value: 'src/content',
     label: '文章附件',
-    description: '查看文章或笔记同目录下的图片附件。'
+    description: '記事やメモと同じディレクトリにある画像添付を確認します。'
   }
 ] as const satisfies readonly AdminImageDirectoryOption[];
 
@@ -324,7 +324,7 @@ export const getAdminImageMetaRequest = (searchParams: URLSearchParams): AdminIm
 
   const rawField = (searchParams.get('field') ?? '').trim();
   if (!isAdminImageFieldContext(rawField)) {
-    throw new AdminImageError('field 参数非法，无法读取图片元数据');
+    throw new AdminImageError('field パラメータが不正なため、画像メタデータを読み取れません');
   }
 
   return {

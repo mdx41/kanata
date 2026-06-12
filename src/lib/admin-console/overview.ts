@@ -278,7 +278,7 @@ const getRecentMemoPublication = (entry: MemoEntry): AdminOverviewRecentPublicat
     href: isDraft ? null : '/memo/',
     isDraft,
     date: entry.data.date ?? null,
-    dateLabel: entry.data.date ? formatCompactDate(entry.data.date) : '未设置日期',
+    dateLabel: entry.data.date ? formatCompactDate(entry.data.date) : '日付未設定',
     shortDateLabel: formatShortDate(entry.data.date ?? null)
   };
 };

@@ -1,3 +1,3 @@
 // Deprecated compatibility layer for fork users.
-// New Theme Console runtime imports should prefer `theme-shared.ts`.
+// 新しいテーマ設定ランタイムの import は `theme-shared.ts` を優先する。
 export * from './theme-shared';

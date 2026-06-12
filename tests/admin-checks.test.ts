@@ -227,7 +227,7 @@ describe('admin-console/checks', () => {
         expect.objectContaining({
           relativePath: 'src/content/bits/images.md',
           fieldPath: 'images[1].src',
-          message: expect.stringContaining('只允许 public/** 下的相对图片路径或 https:// 远程 URL')
+          message: expect.stringContaining('public/** 配下の相対画像パス、または https:// のリモートURLのみ使えます')
         })
       ])
     );

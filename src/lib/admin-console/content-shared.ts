@@ -216,7 +216,7 @@ const resolveAdminContentEntrySourcePath = (
   if (!resolved) {
     throw new AdminContentEntryResolutionError(
       'source-not-found',
-      `未找到 content 源文件：${collection}/${normalizedEntryId}`
+      `content のソースファイルが見つかりません：${collection}/${normalizedEntryId}`
     );
   }
 
@@ -246,7 +246,7 @@ const getRequiredStringField = (
 ): string => {
   const value = input[field];
   if (typeof value === 'string') return value;
-  issues.push(createIssue(field, `frontmatter.${field} 必须是字符串`));
+  issues.push(createIssue(field, `frontmatter.${field} は文字列である必要があります`));
   return '';
 };
 
@@ -257,7 +257,7 @@ const getRequiredBooleanField = (
 ): boolean => {
   const value = input[field];
   if (typeof value === 'boolean') return value;
-  issues.push(createIssue(field, `frontmatter.${field} 必须是布尔值`));
+  issues.push(createIssue(field, `frontmatter.${field} は真偽値である必要があります`));
   return false;
 };
 
@@ -272,7 +272,7 @@ const parseAdminEssayEditorInput = (
 ): { values?: AdminEssayEditorValues; issues: AdminContentValidationIssue[] } => {
   if (!isRecord(input)) {
     return {
-      issues: [createIssue('frontmatter', 'frontmatter 必须是对象')]
+      issues: [createIssue('frontmatter', 'frontmatter はオブジェクトである必要があります')]
     };
   }
 
@@ -298,7 +298,7 @@ const parseAdminBitsEditorInput = (
 ): { values?: AdminBitsEditorValues; issues: AdminContentValidationIssue[] } => {
   if (!isRecord(input)) {
     return {
-      issues: [createIssue('frontmatter', 'frontmatter 必须是对象')]
+      issues: [createIssue('frontmatter', 'frontmatter はオブジェクトである必要があります')]
     };
   }
 
@@ -381,8 +381,8 @@ const validateEssayPublicSlug = async (
       createIssue(
         'slug',
         frontmatter.slug
-          ? 'essay.slug 必须是小写 kebab-case'
-          : '当前条目路径拍平后的公开 slug 不合法，请设置合法 slug 或调整文件路径'
+          ? 'essay.slug は小文字の kebab-case である必要があります'
+          : '現在の項目パスから生成した公開 slug が不正です。有効な slug を設定するか、ファイルパスを調整してください'
       )
     );
   }
@@ -422,7 +422,7 @@ const validateEssayPublicSlug = async (
     issues.push(
       createIssue(
         'slug',
-        `无法完成 essay.slug 唯一性校验：${error instanceof Error ? error.message : 'unknown error'}`
+        `essay.slug の一意性チェックを完了できません：${error instanceof Error ? error.message : 'unknown error'}`
       )
     );
   }
@@ -501,7 +501,7 @@ const toMemoEditorValues = (state: AdminContentSourceState): AdminMemoEditorValu
 
 export const getAdminContentReadOnlyReason = (collection: AdminContentCollectionKey): string | null =>
   collection === 'memo'
-    ? 'Phase 2B 首批仅开放 essay / bits frontmatter 写回；memo 仍保持只读，并单独保留 date 可选 / slug 不走 slugRule 的 schema 差异。'
+    ? 'Phase 2B では essay / bits の frontmatter 書き戻しのみ有効です。memo は引き続き読み取り専用で、date 任意 / slugRule 対象外という schema 差分を個別に保持します。'
     : null;
 
 export const readAdminContentEntryEditorPayload = async (
@@ -540,7 +540,7 @@ export const readAdminContentEntryEditorPayload = async (
     revision: state.revision,
     relativePath: state.relativePath,
     writable: false,
-    readonlyReason: getAdminContentReadOnlyReason(collection) ?? '当前 collection 暂不支持写盘',
+    readonlyReason: getAdminContentReadOnlyReason(collection) ?? '現在の collection はまだ書き込みに対応していません',
     values: toMemoEditorValues(state)
   };
 };
@@ -556,7 +556,7 @@ const buildEssayFrontmatterFromValues = (
 
   const dateResult = parseEssayDateInput(values.date);
   if (!dateResult) {
-    issues.push(createIssue('date', 'essay.date 必须是 YYYY-MM-DD 或带时区的 ISO 8601 日期时间'));
+    issues.push(createIssue('date', 'essay.date は YYYY-MM-DD またはタイムゾーン付き ISO 8601 日時である必要があります'));
   }
 
   const explicitPublishedAt = values.publishedAt.trim();
@@ -566,7 +566,7 @@ const buildEssayFrontmatterFromValues = (
     : dateResult?.publishedAt;
 
   if (hasExplicitPublishedAt && !publishedAt) {
-    issues.push(createIssue('publishedAt', 'essay.publishedAt 必须是带时区的 ISO 8601 日期时间'));
+    issues.push(createIssue('publishedAt', 'essay.publishedAt はタイムゾーン付き ISO 8601 日時である必要があります'));
   }
 
   if (!dateResult || issues.length > 0) {
@@ -605,13 +605,13 @@ const parseBitsImages = (value: string): { images?: AdminBitsImage[]; issues: Ad
     parsed = JSON.parse(trimmed);
   } catch {
     return {
-      issues: [createIssue('imagesText', 'images 必须是合法 JSON 数组')]
+      issues: [createIssue('imagesText', 'images は有効な JSON 配列である必要があります')]
     };
   }
 
   if (!Array.isArray(parsed)) {
     return {
-      issues: [createIssue('imagesText', 'images 必须是 JSON 数组')]
+      issues: [createIssue('imagesText', 'images は JSON 配列である必要があります')]
     };
   }
 
@@ -620,14 +620,14 @@ const parseBitsImages = (value: string): { images?: AdminBitsImage[]; issues: Ad
 
   parsed.forEach((item, index) => {
     if (!isRecord(item)) {
-      issues.push(createIssue(`images[${index}]`, `images[${index}] 必须是对象`));
+      issues.push(createIssue(`images[${index}]`, `images[${index}] はオブジェクトである必要があります`));
       return;
     }
 
     const src = normalizeOptionalText(item.src);
     const normalizedSrc = normalizeAdminBitsImageSource(src);
     if (!normalizedSrc) {
-      issues.push(createIssue(`images[${index}].src`, `images[${index}].src 只允许 https:// 远程路径或仓库内相对图片路径`));
+      issues.push(createIssue(`images[${index}].src`, `images[${index}].src https:// のリモートパス、またはリポジトリ内の相対画像パスのみ使えます`));
     }
 
     const width = item.width == null || item.width === ''
@@ -637,10 +637,10 @@ const parseBitsImages = (value: string): { images?: AdminBitsImage[]; issues: Ad
       ? undefined
       : (typeof item.height === 'number' ? item.height : Number.parseInt(String(item.height), 10));
     if (width !== undefined && (!Number.isInteger(width) || width <= 0)) {
-      issues.push(createIssue(`images[${index}].width`, `images[${index}].width 必须是正整数`));
+      issues.push(createIssue(`images[${index}].width`, `images[${index}].width は正の整数である必要があります`));
     }
     if (height !== undefined && (!Number.isInteger(height) || height <= 0)) {
-      issues.push(createIssue(`images[${index}].height`, `images[${index}].height 必须是正整数`));
+      issues.push(createIssue(`images[${index}].height`, `images[${index}].height は正の整数である必要があります`));
     }
 
     if (
@@ -682,7 +682,7 @@ const buildBitsFrontmatterFromValues = (
     issues.push(
       createIssue(
         'authorAvatar',
-        'author.avatar 只允许相对图片路径（例如 author/avatar.webp），不要带 public/、不要以 / 开头，也不要使用 URL、..、?、#'
+        'author.avatar 相対画像パスのみ使えます（例: author/avatar.webp）。public/、先頭の /、URL、..、?、# は使わないでください'
       )
     );
   }
@@ -871,7 +871,7 @@ export const buildAdminContentWritePlan = async (
     issues: [
       createIssue(
         'collection',
-        'Phase 2B 首批仅开放 essay / bits frontmatter 写回；memo 仍保持只读。'
+        'Phase 2B では essay / bits の frontmatter 書き戻しのみ有効です。memo は引き続き読み取り専用です。'
       )
     ],
     changedFields: [],

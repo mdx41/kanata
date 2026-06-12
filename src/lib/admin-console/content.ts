@@ -106,11 +106,11 @@ export const ADMIN_CONTENT_COLLECTIONS = ['essay', 'bits', 'memo'] as const sati
 
 export const ADMIN_CONTENT_SORT_OPTIONS = [
   { value: 'recent', label: '最近更新' },
-  { value: 'title', label: '标题 A-Z' }
+  { value: 'title', label: 'タイトル A-Z' }
 ] as const satisfies readonly { value: AdminContentSortKey; label: string }[];
 
 export const ADMIN_CONTENT_DRAFT_OPTIONS = [
-  { value: 'all', label: '全部状态' },
+  { value: 'all', label: 'すべて状态' },
   { value: 'published', label: '仅非草稿' },
   { value: 'draft', label: '仅草稿' }
 ] as const satisfies readonly { value: AdminContentDraftFilter; label: string }[];
@@ -128,7 +128,7 @@ const ADMIN_CONTENT_PAGE_SIZES: Record<AdminContentCollectionKey, number> = {
 };
 
 const EMPTY_VALUE = '(空)';
-const MISSING_VALUE = '(未设置)';
+const MISSING_VALUE = '(未設定)';
 
 const isAdminContentDraftFilter = (value: string): value is AdminContentDraftFilter =>
   ADMIN_CONTENT_DRAFT_OPTIONS.some((option) => option.value === value);
@@ -163,7 +163,7 @@ const orderByMemoDate = (left: MemoEntry, right: MemoEntry): number =>
 const formatNullableDate = (date: Date | null): { label: string; value: string | null; year: number | null } => {
   if (!date) {
     return {
-      label: '未设置日期',
+      label: '日付未設定',
       value: null,
       year: null
     };
@@ -253,7 +253,7 @@ const createEssayIndexItem = (entry: EssayEntry): AdminContentIndexItem => {
     frontmatterFields: [
       buildEntryField('title', entry.data.title, entry.id),
       buildEntryField('description', entry.data.description, EMPTY_VALUE),
-      buildEntryField('date', value, '未设置日期'),
+      buildEntryField('date', value, '日付未設定'),
       buildEntryField('tags', entry.data.tags.join(', '), EMPTY_VALUE),
       buildEntryField('draft', String(entry.data.draft === true)),
       buildEntryField('archive', String(entry.data.archive !== false)),
@@ -307,7 +307,7 @@ const createBitsIndexItem = (
     frontmatterFields: [
       buildEntryField('title', entry.data.title, fallbackTitle),
       buildEntryField('description', entry.data.description, EMPTY_VALUE),
-      buildEntryField('date', value, '未设置日期'),
+      buildEntryField('date', value, '日付未設定'),
       buildEntryField('tags', entry.data.tags.join(', '), EMPTY_VALUE),
       buildEntryField('draft', String(entry.data.draft === true)),
       buildEntryField('slug', slug),
@@ -357,7 +357,7 @@ const createMemoIndexItem = (entry: MemoEntry): AdminContentIndexItem => {
     frontmatterFields: [
       buildEntryField('title', entry.data.title, entry.id),
       buildEntryField('subtitle', subtitle, EMPTY_VALUE),
-      buildEntryField('date', value, '未设置日期'),
+      buildEntryField('date', value, '日付未設定'),
       buildEntryField('draft', String(entry.data.draft === true)),
       buildEntryField('slug', slug, MISSING_VALUE),
       buildEntryField('public route', '/memo/')
@@ -404,7 +404,7 @@ const loadCollectionSummary = async (
         label: COLLECTION_LABELS[collection],
         totalCount: entries.length,
         draftCount: entries.filter((entry) => entry.data.draft === true).length,
-        latestDateLabel: latestDate ? formatDateTime(latestDate) : '未设置日期'
+        latestDateLabel: latestDate ? formatDateTime(latestDate) : '日付未設定'
       };
     }
     case 'bits': {
@@ -416,7 +416,7 @@ const loadCollectionSummary = async (
         label: COLLECTION_LABELS[collection],
         totalCount: entries.length,
         draftCount: entries.filter((entry) => entry.data.draft === true).length,
-        latestDateLabel: latestDate ? formatDateTime(latestDate) : '未设置日期'
+        latestDateLabel: latestDate ? formatDateTime(latestDate) : '日付未設定'
       };
     }
     case 'memo': {
@@ -428,7 +428,7 @@ const loadCollectionSummary = async (
         label: COLLECTION_LABELS[collection],
         totalCount: entries.length,
         draftCount: entries.filter((entry) => entry.data.draft === true).length,
-        latestDateLabel: latestDate ? formatDateTime(latestDate) : '未设置日期'
+        latestDateLabel: latestDate ? formatDateTime(latestDate) : '日付未設定'
       };
     }
     default:
@@ -538,7 +538,7 @@ export const getAdminContentPublicFallbackLabel = (item: AdminContentIndexItem):
   }
 
   if (item.collection === 'memo') {
-    return 'memo 当前使用固定公开路由 /memo/';
+    return 'memo は現在、固定の公開ルート /memo/ を使用しています';
   }
 
   if (item.collection === 'bits') {
@@ -546,5 +546,5 @@ export const getAdminContentPublicFallbackLabel = (item: AdminContentIndexItem):
     return `公开定位依赖 /bits/ 分页与锚点（${anchorId}）`;
   }
 
-  return '当前条目未生成公开页链接';
+  return '現在の項目には公開ページリンクが生成されていません';
 };

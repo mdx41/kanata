@@ -124,17 +124,17 @@ const AdminThemeDevConsole = adminDevState?.AdminThemeDevConsole;
 const AdminImagePicker = adminDevState?.AdminImagePicker;
 ---
 
-<AdminLayout title="Theme Console" stylesHref={adminDevState?.stylesHref ?? adminShellStylesHref}>
+<AdminLayout title="テーマ設定" stylesHref={adminDevState?.stylesHref ?? adminShellStylesHref}>
   <AdminShell
     currentRoute="theme"
-    title="Theme Console"
-    subtitle="主题设置"
+    title="テーマ設定"
+    subtitle="テーマ設定"
     showNav={isDev}
   >
     {isDev ? (
       <div slot="status" class="admin-status-slot">
         <p id="admin-status-live" class="admin-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
-        <p id="admin-status" class="admin-status" data-state="idle">等待加载</p>
+        <p id="admin-status" class="admin-status" data-state="idle">読み込み待ち</p>
       </div>
     ) : null}
     {
@@ -154,7 +154,7 @@ const AdminImagePicker = adminDevState?.AdminImagePicker;
         />
       ) : (
         <AdminReadonlyNotice>
-          若需修改主题配置，请在本地运行 <code translate="no">npm run dev</code> 后从此入口进入。
+          テーマ設定を変更するには、ローカルで <code translate="no">npm run dev</code> を起動してから、この入口にアクセスしてください。
         </AdminReadonlyNotice>
       )
     }

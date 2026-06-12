@@ -73,7 +73,7 @@ export const createSocialLinks = ({
     customSocialOptionElements.map((option) => {
       const value = normalizeAdminSocialIconKey(option.value) ?? defaultCustomSocialIconKey;
       const label =
-        option.getAttribute('data-social-default-label')?.trim() || option.textContent?.trim() || '链接';
+        option.getAttribute('data-social-default-label')?.trim() || option.textContent?.trim() || 'リンク';
       return [value, label];
     })
   );
@@ -81,7 +81,7 @@ export const createSocialLinks = ({
     customSocialIconLabels.get(iconKey)
     || customSocialIconLabels.get(fallbackCustomSocialIconKey)
     || customSocialIconLabels.get(defaultCustomSocialIconKey)
-    || '链接';
+    || 'リンク';
   const isEditableCustomLabelIconKey = (iconKey: SiteSocialIconKey): boolean =>
     iconKey === fallbackCustomSocialIconKey;
 
@@ -336,9 +336,9 @@ export const createSocialLinks = ({
     const visible = Boolean(visibleInput.checked);
     toggleBtn.dataset.state = visible ? 'visible' : 'hidden';
     toggleBtn.setAttribute('aria-pressed', visible ? 'true' : 'false');
-    toggleBtn.setAttribute('aria-label', visible ? '隐藏链接' : '显示链接');
-    toggleBtn.setAttribute('title', visible ? '隐藏链接' : '显示链接');
-    toggleLabel.textContent = visible ? '隐藏链接' : '显示链接';
+    toggleBtn.setAttribute('aria-label', visible ? 'リンクを非表示' : 'リンクを表示');
+    toggleBtn.setAttribute('title', visible ? 'リンクを非表示' : 'リンクを表示');
+    toggleLabel.textContent = visible ? 'リンクを非表示' : 'リンクを表示';
   };
 
   const finalizeCustomIdInput = (

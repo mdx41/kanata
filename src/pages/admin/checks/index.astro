@@ -52,11 +52,11 @@ const buildChecksHref = (category: AdminChecksFilterValue): string => {
 };
 ---
 
-<AdminLayout title="Checks Console" stylesHref={adminStylesHref}>
+<AdminLayout title="チェック" stylesHref={adminStylesHref}>
   <AdminShell
     currentRoute="checks"
-    title="Checks Console"
-    subtitle="后台诊断"
+    title="チェック"
+    subtitle="管理画面診断"
     showNav={isDev}
   >
     {isDev ? (
@@ -82,7 +82,7 @@ const buildChecksHref = (category: AdminChecksFilterValue): string => {
                 <div class="admin-checks-toolbar__filters-wrap">
                   <span class="admin-checks-toolbar__separator" aria-hidden="true">｜</span>
 
-                  <nav class="admin-checks-toolbar__filters" aria-label="检查分类筛选">
+                  <nav class="admin-checks-toolbar__filters" aria-label="チェックカテゴリの絞り込み">
                     <a
                       href={buildChecksHref('all')}
                       class:list={[
@@ -91,7 +91,7 @@ const buildChecksHref = (category: AdminChecksFilterValue): string => {
                       ]}
                       aria-current={selectedCategory === 'all' ? 'page' : undefined}
                     >
-                      <span class="admin-checks-filter__label">全部</span>
+                      <span class="admin-checks-filter__label">すべて</span>
                       <span class="admin-checks-filter__count">{checksDevState.checks.totalIssueCount}</span>
                     </a>
                     {
@@ -125,7 +125,7 @@ const buildChecksHref = (category: AdminChecksFilterValue): string => {
                   type="submit"
                   data-admin-checks-refresh-button
                 >
-                  重新检测
+                  再チェック
                 </button>
               </form>
             </div>
@@ -134,8 +134,8 @@ const buildChecksHref = (category: AdminChecksFilterValue): string => {
               <p class="admin-checks-toolbar__body">
                 {
                   checksDevState.checks.totalIssueCount > 0
-                    ? `当前共发现 ${checksDevState.checks.totalIssueCount} 个问题，分布在 ${checksDevState.checks.blockedCategoryCount} 个分类，涉及 ${checksDevState.checks.affectedPathCount} 个文件。`
-                    : '当前检查范围内未发现问题'
+                    ? `現在 ${checksDevState.checks.totalIssueCount} 件の問題があります。カテゴリ ${checksDevState.checks.blockedCategoryCount} 件、対象ファイル ${checksDevState.checks.affectedPathCount} 件に分布しています。`
+                    : '現在のチェック範囲では問題は見つかりませんでした'
                 }
               </p>
 
@@ -169,7 +169,7 @@ const buildChecksHref = (category: AdminChecksFilterValue): string => {
                       category.issueCount > 0 ? 'admin-badge--danger' : 'admin-badge--success'
                     ]}
                   >
-                    {category.issueCount > 0 ? `${category.issueCount} 个问题` : '正常'}
+                    {category.issueCount > 0 ? `${category.issueCount} 件の問題` : '正常'}
                   </span>
                 </div>
 
@@ -245,7 +245,7 @@ const buildChecksHref = (category: AdminChecksFilterValue): string => {
                       <span class="admin-checks-empty__icon" aria-hidden="true">
                         <AdminIcon name="check" class="admin-checks-empty__icon-mark" size={18} strokeWidth={2.6} />
                       </span>
-                      <span>当前分类未发现问题</span>
+                      <span>現在のカテゴリでは問題は見つかりませんでした</span>
                     </p>
                   )
                 }
@@ -255,7 +255,7 @@ const buildChecksHref = (category: AdminChecksFilterValue): string => {
         </section>
       ) : (
         <AdminReadonlyNotice>
-          若需运行后台诊断，请在本地运行 <code translate="no">npm run dev</code>；发布前仍以终端检查为准。
+          管理画面診断を実行するには、ローカルで <code translate="no">npm run dev</code> を起動してください。公開前の最終確認はターミナルのチェックを基準にします。
         </AdminReadonlyNotice>
       )
     }

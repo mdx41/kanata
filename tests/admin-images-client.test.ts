@@ -119,7 +119,7 @@ describe('admin-images/data', () => {
     mockListFetch(payload);
 
     await expect(fetchList('/api/admin/images/list', createState({ scope: 'recent' }), 20))
-      .rejects.toThrow('图片列表响应格式无效');
+      .rejects.toThrow('画像一覧のレスポンス形式が無効です');
   });
 
   it('rejects missing pagination fields from Images Console list responses', async () => {
@@ -128,7 +128,7 @@ describe('admin-images/data', () => {
     mockListFetch(payload);
 
     await expect(fetchList('/api/admin/images/list', createState({ scope: 'recent' }), 20))
-      .rejects.toThrow('图片列表响应格式无效');
+      .rejects.toThrow('画像一覧のレスポンス形式が無効です');
   });
 
   it('rejects malformed Images Console filter options', async () => {
@@ -143,7 +143,7 @@ describe('admin-images/data', () => {
     mockListFetch(payload);
 
     await expect(fetchList('/api/admin/images/list', createState({ scope: 'recent' }), 20))
-      .rejects.toThrow('图片列表响应格式无效');
+      .rejects.toThrow('画像一覧のレスポンス形式が無効です');
   });
 
   it('rejects malformed shared picker list and metadata responses', () => {
@@ -158,7 +158,7 @@ describe('admin-images/data', () => {
           }
         ]
       }
-    })).toThrow('图片列表响应格式无效');
+    })).toThrow('画像一覧のレスポンス形式が無効です');
 
     expect(() => parseAdminImageMetaResponse({
       ok: true,

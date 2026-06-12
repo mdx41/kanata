@@ -908,7 +908,7 @@ const readWebpSize = (buffer: Buffer): { width: number; height: number } | null 
 const readLocalInspectionMeta = async (assetPath: string): Promise<AdminImageInspectionMeta> => {
   const absolutePath = toAbsoluteAssetPath(assetPath);
   if (!existsSync(absolutePath)) {
-    throw new AdminImageError(`图片文件不存在：${assetPath}`, 404);
+    throw new AdminImageError(`画像ファイルが存在しません：${assetPath}`, 404);
   }
 
   const cacheKey = getAdminImageCacheKey('inspection-meta', assetPath);
@@ -963,7 +963,7 @@ const readLocalImageMeta = async (target: LocalImageTarget): Promise<AdminImageM
 const resolveFieldImageTarget = (field: AdminImageFieldContext, rawValue: string): FieldImageTarget => {
   const value = rawValue.trim();
   if (!value) {
-    throw new AdminImageError('图片值为空，无法读取元数据');
+    throw new AdminImageError('画像の値が空のため、メタデータを読み取れません');
   }
 
   if (field === 'bits.images') {
@@ -972,7 +972,7 @@ const resolveFieldImageTarget = (field: AdminImageFieldContext, rawValue: string
 
     const normalized = normalizeAdminLocalImageSource(value);
     if (!normalized) {
-      throw new AdminImageError('bits.images 只允许 public/** 下的相对图片路径或 https:// 远程 URL');
+      throw new AdminImageError('bits.images は public/** 配下の相対画像パス、または https:// のリモートURLのみ使えます');
     }
 
     return {
@@ -989,7 +989,7 @@ const resolveFieldImageTarget = (field: AdminImageFieldContext, rawValue: string
   if (field === 'page.bits.defaultAuthor.avatar') {
     const normalized = normalizeBitsAvatarPath(value);
     if (normalized === undefined || !normalized) {
-      throw new AdminImageError('Bits 默认头像只允许相对图片路径（例如 author/avatar.webp）');
+      throw new AdminImageError('Bits のデフォルトアバターは相対画像パスのみ使えます（例: author/avatar.webp）');
     }
 
     return {
@@ -1005,14 +1005,14 @@ const resolveFieldImageTarget = (field: AdminImageFieldContext, rawValue: string
 
   const normalized = normalizeHeroImageSrc(value);
   if (!normalized) {
-    throw new AdminImageError('Hero 图片只允许 src/assets/**、public 路径或 https:// 远程 URL');
+    throw new AdminImageError('Hero 画像は src/assets/**、public パス、または https:// のリモートURLのみ使えます');
   }
 
   if (normalized.startsWith('https://')) return { kind: 'remote', url: normalized };
 
   const localPath = getHeroImageLocalFilePath(normalized);
   if (!localPath) {
-    throw new AdminImageError('Hero 图片地址不支持当前本地路径格式');
+    throw new AdminImageError('Hero 画像のアドレスは現在のローカルパス形式に対応していません');
   }
 
   return {
@@ -1038,7 +1038,7 @@ const resolveLocalTargetFromPath = (assetPath: string): LocalImageTarget => {
     || normalizedPath.includes('#')
     || !IMAGE_LOCAL_EXT_RE.test(normalizedPath)
   ) {
-    throw new AdminImageError('图片路径必须是 public/**、src/assets/** 或 src/content/** 下的规范仓库相对图片路径');
+    throw new AdminImageError('画像パスは public/**、src/assets/**、src/content/** 配下の正規化されたリポジトリ相対画像パスである必要があります');
   }
 
   const canonicalPath = path.posix.normalize(normalizedPath);
@@ -1070,7 +1070,7 @@ const resolveLocalTargetFromPath = (assetPath: string): LocalImageTarget => {
     };
   }
 
-  throw new AdminImageError('图片路径必须是 public/**、src/assets/** 或 src/content/** 下的规范仓库相对图片路径');
+  throw new AdminImageError('画像パスは public/**、src/assets/**、src/content/** 配下の正規化されたリポジトリ相対画像パスである必要があります');
 };
 
 export const getAdminImageMeta = async (input: AdminImageMetaInput): Promise<AdminImageMetaResult> => {
@@ -1081,11 +1081,11 @@ export const getAdminImageMeta = async (input: AdminImageMetaInput): Promise<Adm
 
   const rawValue = 'value' in input && typeof input.value === 'string' ? input.value.trim() : '';
   if (!('field' in input) || !input.field) {
-    throw new AdminImageError('缺少 field 或 path，无法读取图片元数据');
+    throw new AdminImageError('field または path がないため、画像メタデータを読み取れません');
   }
 
   if (!rawValue) {
-    throw new AdminImageError('缺少图片值，无法读取元数据');
+    throw new AdminImageError('画像の値がないため、メタデータを読み取れません');
   }
 
   const fieldTarget = resolveFieldImageTarget(input.field, rawValue);

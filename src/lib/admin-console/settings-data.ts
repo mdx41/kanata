@@ -64,7 +64,7 @@ export const parseAdminSettingsExportBundle = (
   if (!isRecord(input)) {
     return {
       ok: false,
-      errors: ['导入文件必须是 JSON 对象']
+      errors: ['インポートファイルは JSON オブジェクトである必要があります']
     };
   }
 
@@ -73,11 +73,11 @@ export const parseAdminSettingsExportBundle = (
   const rawSettings = input.settings;
 
   if (!isRecord(rawManifest)) {
-    errors.push('导入文件缺少 manifest 对象');
+    errors.push('インポートファイルに manifest オブジェクトがありません');
   }
 
   if (!isRecord(rawSettings)) {
-    errors.push('导入文件缺少 settings 快照');
+    errors.push('インポートファイルに settings スナップショットがありません');
   }
 
   if (errors.length > 0 || !isRecord(rawManifest) || !isRecord(rawSettings)) {
@@ -90,7 +90,7 @@ export const parseAdminSettingsExportBundle = (
   const schemaVersion = rawManifest.schemaVersion;
   if (schemaVersion !== ADMIN_SETTINGS_EXPORT_SCHEMA_VERSION) {
     errors.push(
-      `仅支持 schemaVersion=${ADMIN_SETTINGS_EXPORT_SCHEMA_VERSION} 的 settings 导入包`
+      `対応している schemaVersion は ${ADMIN_SETTINGS_EXPORT_SCHEMA_VERSION} の settings インポートパッケージのみです`
     );
   }
 
@@ -103,7 +103,7 @@ export const parseAdminSettingsExportBundle = (
     ? rawManifest.includedScopes.filter((value): value is string => typeof value === 'string')
     : [];
   if (!includedScopes.includes(ADMIN_SETTINGS_EXPORT_SCOPE)) {
-    errors.push('manifest.includedScopes 必须包含 settings');
+    errors.push('manifest.includedScopes には settings を含める必要があります');
   }
 
   const excludes = Array.isArray(rawManifest.excludes)
@@ -121,7 +121,7 @@ export const parseAdminSettingsExportBundle = (
     && rawLocale !== undefined
     && typeof rawLocale !== 'string'
   ) {
-    errors.push('manifest.locale 必须是字符串、null，或在旧导出包中直接缺失');
+    errors.push('manifest.locale は文字列、null、または旧エクスポートパッケージでは未指定である必要があります');
   }
 
   if (errors.length > 0) {
