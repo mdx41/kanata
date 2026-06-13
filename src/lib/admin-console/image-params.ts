@@ -107,8 +107,8 @@ export const ADMIN_IMAGE_DIRECTORY_OPTIONS = [
   },
   {
     value: 'public/bits',
-    label: '絮语配图',
-    description: '查看絮语常用的公开配图。'
+    label: 'ひとこと画像',
+    description: 'ひとこと用画像を確認します。通常は public/bits/images/ に配置します。'
   },
   {
     value: 'public/images',

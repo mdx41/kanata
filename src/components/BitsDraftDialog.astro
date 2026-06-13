@@ -86,7 +86,7 @@ const { settings } = getThemeSettings();
             <label>画像を追加（任意）</label>
             <button class="bits-draft-image-add" type="button" data-bits-image-add>+ 追加</button>
           </div>
-          <div class="bits-draft-help">画像サイズを自動で読み取ります</div>
+          <div class="bits-draft-help">画像は public/bits/images/ に置き、src は bits/images/... と入力します。サイズは自動で読み取ります</div>
         </div>
         <div class="bits-draft-images" data-bits-images>
           <div class="bits-draft-image-row" data-bits-image-row>
@@ -96,7 +96,7 @@ const { settings } = getThemeSettings();
                 data-bits-image-src
                 type="text"
                 inputmode="url"
-                placeholder="bits/xxx.jpg または https://..."
+                placeholder="bits/images/example.webp または https://..."
               />
               <button class="bits-draft-image-clear" type="button" data-bits-image-remove aria-label="画像を削除">x</button>
             </div>
@@ -128,7 +128,7 @@ const { settings } = getThemeSettings();
                 data-bits-image-src
                 type="text"
                 inputmode="url"
-                placeholder="bits/xxx.jpg または https://..."
+                placeholder="bits/images/example.webp または https://..."
               />
               <button class="bits-draft-image-clear" type="button" data-bits-image-remove aria-label="画像を削除">x</button>
             </div>

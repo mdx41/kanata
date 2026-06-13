@@ -535,7 +535,7 @@ const activeFilterCount = pageData
                                 value={selectedEntryEditorPayload.values.imagesText}
                               />
                               <p class="admin-content-image-editor__hint">
-                                既存の `bits.images` 形式を維持します。ローカル相対パスまたは `https://` のリモートURLを指定できます。幅と高さは空欄でもよく、ローカル画像は選択ツールから自動入力できます。
+                                既存の `bits.images` 形式を維持します。bits 用画像は `public/bits/images/` に置き、`src` には `bits/images/example.webp` のような公開相対パスを指定します。`https://` のリモートURLも利用できます。幅と高さは空欄でもよく、ローカル画像は選択ツールから自動入力できます。
                               </p>
                               <p class="admin-content-editor__error" data-field-error="imagesText" hidden></p>
                               <div class="admin-content-image-editor" id="admin-content-image-editor">
@@ -561,7 +561,7 @@ const activeFilterCount = pageData
                                               type="text"
                                               value={image.src}
                                               spellcheck="false"
-                                              placeholder="bits/demo.webp 或 https://…"
+                                              placeholder="bits/images/example.webp または https://…"
                                               data-admin-content-image-src
                                             />
                                             <button
@@ -619,7 +619,7 @@ const activeFilterCount = pageData
                                           class="admin-field__control"
                                           type="text"
                                           spellcheck="false"
-                                          placeholder="bits/demo.webp 或 https://…"
+                                          placeholder="bits/images/example.webp または https://…"
                                           data-admin-content-image-src
                                         />
                                         <button

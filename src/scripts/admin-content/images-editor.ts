@@ -239,7 +239,7 @@ export const initAdminContentBitsImagesEditor = ({
       picker.open({
         field: 'bits.images',
         title: 'bits.images 用のローカル画像を選択',
-        description: '`bits.images[*].src` に直接書き込めるローカル public/** リソースのみ表示します。',
+        description: '`bits.images[*].src` に直接書き込めるローカル public/** リソースのみ表示します。bits 用画像は public/bits/images/ への配置を推奨します。',
         query: refs.srcInput?.value ?? '',
         onSelect: (item) => {
           if (refs.srcInput) refs.srcInput.value = item.value;
